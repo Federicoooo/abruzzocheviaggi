@@ -809,3 +809,11 @@ select option:checked{
   background:rgba(0,0,0,.08);
   pointer-events:none;
 }
+
+
+.badge{
+  display:inline-block;
+  max-width:100%;
+  white-space:normal;
+  word-break:break-word;
+}
