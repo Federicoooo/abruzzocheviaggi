@@ -16,7 +16,16 @@
   }
   @media (max-width:1100px){ .risorse-tiles{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
   @media (max-width:820px){  .risorse-tiles{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
-  @media (max-width:520px){  .risorse-tiles{ grid-template-columns:1fr; } }
+  @media (max-width:520px){
+  .risorse-tiles{
+    grid-template-columns: 1fr;
+  }
+
+  .risorsa-card{
+    justify-self: center;
+    width: min(100%, 260px);
+  }
+}
 
   /* --- Collegamenti diretti dall’aeroporto (chips + modal) --- */
   .dest-cover{

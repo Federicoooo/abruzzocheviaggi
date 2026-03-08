@@ -986,7 +986,7 @@ window.SCHEDE_AI = {
   "assets/img/castelli/castello-massa-dalbe.jpg": {
     "percorso": "castelli",
     "ambito": "Avezzano-Sulmona",
-    "titolo": "Monte Velino-Mas. d'Albe",
+    "titolo": "Monte Velino - Massa d'Albe",
     "tipo": "Castello Orsini",
     "scheda": "Castello Orsini a Monte Velino-Mas. d'Albe è una tappa significativa del sistema fortificato abruzzese. Mura, volumi e posizione strategica mostrano come il controllo del paesaggio fosse legato a difesa, viabilità interna e rapporto con il borgo circostante.",
     "link": "https://it.wikipedia.org/w/index.php?search=Castello%20Orsini%20Monte%20Velino-Mas.%20d%27Albe%20Abruzzo"

@@ -359,6 +359,17 @@ header{
   max-width:260px;
   text-align:center;
   text-decoration:none;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.risorsa-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.20);
+}
+
+.risorsa-card:hover .risorsa-img img{
+  transform: scale(1.04);
+  transition: transform .25s ease;
 }
 
 .risorsa-img{
@@ -663,10 +674,16 @@ select option:checked{
   box-shadow: 0 6px 18px rgba(0,0,0,.08);
 }
 
-/* === Schede AI flottanti, senza spostare la griglia === */
+/* === Animazione card al passaggio del mouse === */
+
 .carditem{
   position:relative;
-  transition:box-shadow .18s ease, transform .18s ease;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.cards .carditem:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
 }
 
 .carditem.ai-active{
@@ -704,11 +721,6 @@ select option:checked{
   transition:opacity .18s ease, transform .18s ease;
   pointer-events:auto;
 }
-
-.carditem{
-  position:relative;
-}
-
 
 .ai-floating-panel.is-visible{
   opacity:1;
