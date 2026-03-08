@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trekking & MTB – Abruzzo che Viaggi</title>
+<meta name="description" content="Cammini, ciclovie e percorsi di trekking e MTB in Abruzzo. Mobilità lenta e scoperta del territorio." />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+
+<a class="skip-link" href="#main">Vai al contenuto</a>
+<div data-include="header"></div>
+
+<main id="main">
+
+<section class="hero">
+<div class="container">
+<div class="card pad">
+
+<span class="badge">Percorso tematico</span>
+<h1>Trekking &amp; MTB</h1>
+
+<p>
+Sentieri, ciclovie e percorsi per esplorare l’Abruzzo a piedi o in bicicletta.
+Una selezione di itinerari legati alla mobilità lenta e alla scoperta del paesaggio.
+</p>
+
+<div class="filters">
+<div class="field">
+<label for="ambito">Ambito</label>
+<select id="ambito">
+<option value="TUTTI">Tutti gli ambiti</option>
+</select>
+</div>
+
+<div class="field" style="flex:1;min-width:260px">
+<label for="q">Cerca</label>
+<input id="q" type="search"
+placeholder="Es: ciclovia, sentiero, cammino..." />
+</div>
+</div>
+
+<hr class="sep">
+
+</div>
+</div>
+</section>
+
+
+<section class="section">
+<div class="container">
+<div class="card pad">
+
+<h2>Percorsi</h2>
+<p class="kicker">Risultati: <span id="count">0</span></p>
+
+<div id="cards" class="cards"></div>
+
+<hr class="sep">
+</div>
+</div>
+</section>
+
+</main>
+
+<div data-include="footer"></div>
+
+<script src="assets/js/site.js"></script>
+<script>
+document.getElementById('y').textContent=new Date().getFullYear();
+</script>
+
+<script>
+
+const items=[
+
+/* ===== TERAMO ===== */
+{
+ambito:"Teramo",
+titolo:"Ciclovia Adriatica – Costa teramana",
+tipo:"Percorso ciclabile costiero",
+img:"assets/img/trekking/ciclovia-adriatica-teramo.png"
+},
+
+{
+ambito:"Teramo",
+titolo:"Prati di Tivo – Sentieri del Gran Sasso",
+tipo:"Trekking montano",
+img:"assets/img/trekking/prati-di-tivo-sentieri.jpg"
+},
+
+/* ===== L'AQUILA ===== */
+{
+ambito:"L'Aquila",
+titolo:"Campo Imperatore – Traversate d’altopiano",
+tipo:"Escursionismo",
+img:"assets/img/trekking/campo-imperatore-trekking.jpg"
+},
+
+{
+ambito:"L'Aquila",
+titolo:"Cammino del Gran Sasso",
+tipo:"Cammino naturalistico",
+img:"assets/img/trekking/cammino-gran-sasso.jpg"
+},
+
+/* ===== AVEZZANO–SULMONA ===== */
+{
+ambito:"Avezzano–Sulmona",
+titolo:"Sentieri del PNALM – Pescasseroli",
+tipo:"Escursionismo naturalistico",
+img:"assets/img/trekking/pnalm-sentieri.jpg"
+},
+
+{
+ambito:"Avezzano–Sulmona",
+titolo:"Anello del Lago di Barrea",
+tipo:"Trekking panoramico",
+img:"assets/img/trekking/lago-barrea-anello.jpg"
+},
+
+{
+ambito:"Avezzano–Sulmona",
+titolo:"Gole del Sagittario – Percorsi natura",
+tipo:"Sentieri in riserva",
+img:"assets/img/trekking/gole-sagittario.jpg"
+},
+
+/* ===== CHIETI–PESCARA ===== */
+{
+ambito:"Chieti–Pescara",
+titolo:"Valle dell’Orfento – Sentieri",
+tipo:"Trekking in riserva",
+img:"assets/img/trekking/orfento-sentiero.jpg"
+},
+
+{
+ambito:"Chieti–Pescara",
+titolo:"Majella – Sentieri degli eremi",
+tipo:"Escursionismo culturale",
+img:"assets/img/trekking/eremi-majella.jpg"
+},
+
+{
+ambito:"Chieti–Pescara",
+titolo:"Bike to Coast – Pescara–Ortona",
+tipo:"Ciclovia costiera",
+img:"assets/img/trekking/bike-to-coast.png"
+},
+
+/* ===== LANCIANO–VASTO ===== */
+{
+ambito:"Lanciano–Vasto",
+titolo:"Via Verde della Costa dei Trabocchi",
+tipo:"Percorso ciclopedonale",
+img:"assets/img/trekking/via-verde-trabocchi.jpg"
+},
+
+{
+ambito:"Lanciano–Vasto",
+titolo:"Sentieri costieri Punta Aderci",
+tipo:"Trekking costiero",
+img:"assets/img/trekking/punta-aderci-sentieri.jpg"
+}
+
+];
+
+
+const elCards=document.getElementById("cards");
+const elCount=document.getElementById("count");
+const elAmbito=document.getElementById("ambito");
+const elQ=document.getElementById("q");
+
+function norm(s){
+return(s||"").toLowerCase()
+.normalize("NFD")
+.replace(/\p{Diacritic}/gu,"");
+}
+
+function initAmbiti(){
+[...new Set(items.map(i=>i.ambito))]
+.sort((a,b)=>a.localeCompare(b))
+.forEach(a=>{
+const o=document.createElement("option");
+o.value=a;
+o.textContent=a;
+elAmbito.appendChild(o);
+});
+}
+
+function render(){
+
+const ambito=elAmbito.value;
+const q=norm(elQ.value);
+
+const filtered=items.filter(it=>{
+const okAmbito=(ambito==="TUTTI")||it.ambito===ambito;
+const okQ=!q||norm(it.titolo+it.tipo).includes(q);
+return okAmbito&&okQ;
+});
+
+elCards.innerHTML=filtered.map(it=>`
+<article class="card carditem">
+<div class="media">
+<img src="${it.img}" alt="${it.titolo}">
+</div>
+<div class="body">
+<h3>${it.titolo}</h3>
+<p>${it.tipo}</p>
+<span class="badge">${it.ambito}</span>
+</div>
+</article>
+`).join("");
+
+elCount.textContent=filtered.length;
+}
+
+elAmbito.addEventListener("change",render);
+elQ.addEventListener("input",render);
+
+initAmbiti();
+render();
+
+</script>
+
+</body>
+</html>

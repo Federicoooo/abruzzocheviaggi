@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mare & costa — Abruzzo che Viaggi</title>
+  <meta name="description" content="Mare e costa in Abruzzo: luoghi costieri, riserve, belvedere e trabocchi. Filtro per ambito e ricerca." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Vai al contenuto</a>
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <div class="card pad">
+          <h1>Mare &amp; costa</h1>
+          <p>
+            Luoghi costieri dell’Abruzzo: spiagge, pinete, riserve, belvedere e trabocchi.
+            Usa i filtri per trovare rapidamente cosa ti interessa.
+          </p>
+
+          <div class="filters" role="region" aria-label="Filtri">
+            <div class="field">
+              <label for="ambito">Ambito</label>
+              <select id="ambito">
+                <option value="TUTTI">Tutti gli ambiti</option>
+              </select>
+            </div>
+
+            <div class="field" style="flex:1; min-width:260px">
+              <label for="q">Cerca</label>
+              <input id="q" type="search" placeholder="Es: Cerrano, Pineto, Trabocco, Riserva..." />
+            </div>
+          </div>
+
+          <hr class="sep" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card pad">
+          <h2>Luoghi</h2>
+          <p class="kicker">Risultati: <span id="count">0</span></p>
+
+          <div id="cards" class="cards" aria-live="polite"></div>
+
+          <hr class="sep" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+<div data-include="footer"></div>
+
+  <script src="assets/js/site.js"></script>
+
+  <script>
+  // Immagini: mettile in assets/img/mare/ (come richiesto).
+  // Puoi iniziare con placeholder e sostituire file in seguito (stesso nome = zero modifiche HTML/JS).
+  const items = [
+
+    /* ===== TERAMO ===== */
+    { ambito:"Teramo", titolo:"Torre del Cerrano – Pineto", tipo:"Torre costiera e panorama", img:"assets/img/mare/torre-del-cerrano-pineto.jpg" },
+    { ambito:"Teramo", titolo:"Area Marina Protetta Torre del Cerrano – Pineto e Silvi", tipo:"Area protetta e costa", img:"assets/img/mare/amp-cerrano-pineto-silvi.jpg" },
+    { ambito:"Teramo", titolo:"Pineta di Pineto – Pineto", tipo:"Pineta litoranea e passeggiate", img:"assets/img/mare/pineta-pineto.jpg" },
+    { ambito:"Teramo", titolo:"Giulianova Lido – Giulianova", tipo:"Lungomare e spiaggia", img:"assets/img/mare/giulianova-lido.png" },
+    { ambito:"Teramo", titolo:"Riserva del Borsacchio – Roseto degli Abruzzi", tipo:"Tratto naturale costiero", img:"assets/img/mare/riserva-borsacchio-roseto.png" },
+    { ambito:"Teramo", titolo:"Alba Adriatica – Alba Adriatica", tipo:"Spiaggia sabbiosa e lungomare", img:"assets/img/mare/alba-adriatica.jpg" },
+
+    /* ===== CHIETI–PESCARA ===== */
+    { ambito:"Chieti–Pescara", titolo:"Riserva Naturale Pineta Dannunziana – Pescara", tipo:"Pineta urbana e natura", img:"assets/img/mare/pineta-dannunziana-pescara.jpg" },
+    { ambito:"Chieti–Pescara", titolo:"Ponte del Mare – Pescara", tipo:"Passerella panoramica e fiume", img:"assets/img/mare/ponte-del-mare-pescara.png" },
+    { ambito:"Chieti–Pescara", titolo:"Lungomare di Montesilvano – Montesilvano", tipo:"Passeggiata costiera", img:"assets/img/mare/lungomare-montesilvano.png" },
+    { ambito:"Chieti–Pescara", titolo:"Lidi di Francavilla – Francavilla al Mare", tipo:"Lungomare e costa", img:"assets/img/mare/francavilla-al-mare.jpg" },
+    { ambito:"Chieti–Pescara", titolo:"Lido Riccio – Ortona", tipo:"Spiaggia e scogli", img:"assets/img/mare/lido-riccio-ortona.png" },
+
+    /* ===== LANCIANO–VASTO ===== */
+    { ambito:"Lanciano–Vasto", titolo:"Costa dei Trabocchi – litorale sud", tipo:"Tratto costiero iconico", img:"assets/img/mare/costa-dei-trabocchi.jpg" },
+    { ambito:"Lanciano–Vasto", titolo:"Promontorio Dannunziano – San Vito Chietino", tipo:"Belvedere sul mare", img:"assets/img/mare/promontorio-dannunziano-san-vito.jpg" },
+    { ambito:"Lanciano–Vasto", titolo:"Trabocco Punta Turchino – San Vito Chietino", tipo:"Trabocco storico", img:"assets/img/mare/trabocco-punta-turchino.jpg" },
+    { ambito:"Lanciano–Vasto", titolo:"Trabocco Punta Cavalluccio – Rocca San Giovanni", tipo:"Trabocco sulla costa dei Trabocchi", img:"assets/img/mare/trabocco-punta-cavalluccio.jpg" },
+    { ambito:"Lanciano–Vasto", titolo:"Riserva Naturale di Punta Aderci – Vasto", tipo:"Natura costiera e panorami", img:"assets/img/mare/punta-aderci-vasto.jpg" },
+
+  ];
+
+  const elCards = document.getElementById('cards');
+  const elCount = document.getElementById('count');
+  const elAmbito = document.getElementById('ambito');
+  const elQ = document.getElementById('q');
+
+  function norm(s){
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
+  }
+
+  function initAmbiti(){
+    const ambiti = Array.from(new Set(items.map(i => i.ambito)))
+      .sort((a,b)=>a.localeCompare(b));
+    for (const a of ambiti){
+      const opt = document.createElement('option');
+      opt.value = a;
+      opt.textContent = a;
+      elAmbito.appendChild(opt);
+    }
+  }
+
+  function render(){
+    const ambito = elAmbito.value;
+    const q = norm(elQ.value);
+
+    const filtered = items.filter(it => {
+      const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+      const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+      const okQ = !q || hay.includes(q);
+      return okAmbito && okQ;
+    });
+
+    elCards.innerHTML = filtered.map(it => {
+      return `
+        <article class="card carditem" data-ambito="${it.ambito}" data-kind="foto">
+          <div class="media">
+            <img src="${it.img}" alt="${it.titolo}">
+          </div>
+          <div class="body">
+            <h3>${it.titolo}</h3>
+            <p>${it.tipo}</p>
+            <div class="meta">
+              <span class="badge">${it.ambito}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    elCount.textContent = filtered.length;
+  }
+
+  elAmbito.addEventListener('change', render);
+  elQ.addEventListener('input', render);
+
+  initAmbiti();
+  render();
+  </script>
+</body>
+</html>

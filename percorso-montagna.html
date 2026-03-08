@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Montagna & parchi – Abruzzo che Viaggi</title>
+  <meta name="description" content="Montagna e parchi in Abruzzo: Gran Sasso, Maiella, PNALM, riserve e luoghi naturali. Filtro per ambito e ricerca." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Vai al contenuto</a>
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <div class="card pad">
+          <h1>Montagna &amp; parchi</h1>
+          <p>
+            Luoghi dell’Abruzzo interno: massicci, parchi nazionali, altipiani, gole e riserve.
+            Usa i filtri per orientarti.
+          </p>
+
+          <div class="filters" role="region" aria-label="Filtri">
+            <div class="field">
+              <label for="ambito">Ambito</label>
+              <select id="ambito">
+                <option value="TUTTI">Tutti gli ambiti</option>
+              </select>
+            </div>
+
+            <div class="field" style="flex:1; min-width:260px">
+              <label for="q">Cerca</label>
+              <input id="q" type="search" placeholder="Es: Gran Sasso, Maiella, Barrea, Orfento..." />
+            </div>
+          </div>
+
+          <hr class="sep" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card pad">
+          <h2>Luoghi</h2>
+          <p class="kicker">Risultati: <span id="count">0</span></p>
+
+          <div id="cards" class="cards" aria-live="polite"></div>
+
+          <hr class="sep" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+<div data-include="footer"></div>
+
+  <script src="assets/js/site.js"></script>
+
+  <script>
+  // Immagini: mettile in assets/img/montagna/
+  const items = [
+
+    /* ===== L'AQUILA ===== */
+    { ambito:"L'Aquila", titolo:"Campo Imperatore – Gran Sasso", tipo:"Altopiano e panorami", img:"assets/img/montagna/campo-imperatore.jpg" },
+    { ambito:"L'Aquila", titolo:"Rocca Calascio – Calascio", tipo:"Castello d’altura e sentieri", img:"assets/img/montagna/rocca-calascio.jpg" },
+    { ambito:"L'Aquila", titolo:"Santo Stefano di Sessanio – Gran Sasso", tipo:"Borgo in quota e paesaggi", img:"assets/img/montagna/santo-stefano-sessanio.jpg" },
+    { ambito:"L'Aquila", titolo:"Lago di Campotosto – Campotosto", tipo:"Lago montano e belvedere", img:"assets/img/montagna/lago-campotosto.jpg" },
+
+    /* ===== TERAMO ===== */
+    { ambito:"Teramo", titolo:"Prati di Tivo – Pietracamela", tipo:"Montagna, impianti e sentieri", img:"assets/img/montagna/prati-di-tivo.jpg" },
+    { ambito:"Teramo", titolo:"Gran Sasso – Versante teramano", tipo:"Paesaggi e accessi ai sentieri", img:"assets/img/montagna/gran-sasso-teramo.jpg" },
+
+    /* ===== CHIETI–PESCARA ===== */
+    { ambito:"Chieti–Pescara", titolo:"Passo Lanciano e Majelletta – Pretoro", tipo:"Maiella e panorami", img:"assets/img/montagna/passo-lanciano-majelletta.jpg" },
+    { ambito:"Chieti–Pescara", titolo:"Valle dell’Orfento – Caramanico Terme", tipo:"Gole e natura protetta", img:"assets/img/montagna/valle-orfento.jpg" },
+    { ambito:"Chieti–Pescara", titolo:"Eremo di San Bartolomeo – Roccamorice", tipo:"Eremo nella roccia (Maiella)", img:"assets/img/montagna/eremo-san-bartolomeo.jpg" },
+
+    /* ===== AVEZZANO–SULMONA ===== */
+    { ambito:"Avezzano–Sulmona", titolo:"Parco Nazionale d’Abruzzo – Pescasseroli", tipo:"Centro visita e sentieri", img:"assets/img/montagna/pnalm-pescasseroli.jpg" },
+    { ambito:"Avezzano–Sulmona", titolo:"Lago di Barrea – Barrea", tipo:"Lago e panorami", img:"assets/img/montagna/lago-barrea.jpg" },
+    { ambito:"Avezzano–Sulmona", titolo:"Camosciara – Opi", tipo:"Valle e natura (PNALM)", img:"assets/img/montagna/camosciara-opi.jpg" },
+    { ambito:"Avezzano–Sulmona", titolo:"Gole del Sagittario – Anversa degli Abruzzi", tipo:"Gole e riserva naturale", img:"assets/img/montagna/gole-sagittario-anversa.jpg" },
+
+    /* ===== LANCIANO–VASTO ===== */
+    { ambito:"Lanciano–Vasto", titolo:"Maiella – versante orientale", tipo:"Accessi, eremi e sentieri", img:"assets/img/montagna/maiella-versante-orientale.jpg" }
+
+  ];
+
+  const elCards = document.getElementById('cards');
+  const elCount = document.getElementById('count');
+  const elAmbito = document.getElementById('ambito');
+  const elQ = document.getElementById('q');
+
+  function norm(s){
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
+  }
+
+  function initAmbiti(){
+    const ambiti = Array.from(new Set(items.map(i => i.ambito)))
+      .sort((a,b)=>a.localeCompare(b));
+    for (const a of ambiti){
+      const opt = document.createElement('option');
+      opt.value = a;
+      opt.textContent = a;
+      elAmbito.appendChild(opt);
+    }
+  }
+
+  function render(){
+    const ambito = elAmbito.value;
+    const q = norm(elQ.value);
+
+    const filtered = items.filter(it => {
+      const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+      const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+      const okQ = !q || hay.includes(q);
+      return okAmbito && okQ;
+    });
+
+    elCards.innerHTML = filtered.map(it => {
+      return `
+        <article class="card carditem" data-ambito="${it.ambito}" data-kind="foto">
+          <div class="media">
+            <img src="${it.img}" alt="${it.titolo}">
+          </div>
+          <div class="body">
+            <h3>${it.titolo}</h3>
+            <p>${it.tipo}</p>
+            <div class="meta">
+              <span class="badge">${it.ambito}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    elCount.textContent = filtered.length;
+  }
+
+  elAmbito.addEventListener('change', render);
+  elQ.addEventListener('input', render);
+
+  initAmbiti();
+  render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guide & Accompagnatori — Abruzzo che Viaggi</title>
+  <meta name="description" content="Elenco informativo di guide e accompagnatori in Abruzzo. Filtra per ambito, attività, specializzazioni e lingue." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Vai al contenuto</a>
+
+  <div data-include="header"></div>
+
+  <main id="main">
+
+    <!-- HERO (come le altre pagine) -->
+    <section class="hero">
+      <div class="container">
+        <div class="card pad">
+          <h1>Persone che raccontano l’Abruzzo</h1>
+<p>
+  Una rete di guide, accompagnatori e realtà locali che raccontano e valorizzano il territorio abruzzese.
+  Questa pagina raccoglie <strong>profili informativi di professionisti attivi in Abruzzo</strong>,
+  consultabili liberamente per individuare esperienze, visite ed attività sul territorio.
+</p>
+
+<p class="note">
+  Abruzzocheviaggi non intermedia servizi, non gestisce prenotazioni e
+  non verifica le dichiarazioni fornite: ogni contatto avviene direttamente tra le parti.
+</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENUTO -->
+    <section class="section">
+      <div class="container">
+
+        <!-- CARD PRINCIPALE: FILTRI + RISULTATI -->
+        <div class="card pad">
+          <h2>Trova guide e operatori locali</h2>
+          <p class="note">
+  Usa i filtri per individuare rapidamente le guide in base ad ambito territoriale,
+  attività, specializzazioni e lingue. Puoi selezionare più voci (Ctrl/Cmd + click).
+</p>
+
+          <!-- FILTRI (più puliti) -->
+          <div class="filters guide-filters" style="margin-top:12px">
+
+            <!-- sempre visibili -->
+            <div class="field" style="flex:1; min-width:260px">
+              <label for="q">Cerca</label>
+              <input id="q" type="search" placeholder="Cerca per nome o descrizione…" />
+            </div>
+
+            <div class="field">
+              <label for="fZona">Ambito</label>
+              <select id="fZona" multiple size="3" aria-label="Filtro ambito">
+                <!-- popolato via JS -->
+              </select>
+              <small class="small">Puoi selezionare più ambiti</small>
+            </div>
+
+            <div class="field" style="min-width:auto">
+              <button class="btn" id="clearFilters" type="button">Pulisci</button>
+            </div>
+
+            <!-- avanzati richiudibili -->
+            <details class="guide-advanced" style="width:100%; margin-top:6px">
+              <summary class="btn" style="display:inline-flex; width:auto">Filtri avanzati</summary>
+
+              <div class="filters" style="margin-top:12px">
+
+                <div class="field">
+                  <label for="fTipo">Attività</label>
+                  <select id="fTipo" multiple size="4" aria-label="Filtro attività">
+                    <!-- popolato via JS -->
+                  </select>
+                  <small class="small">Ctrl/Cmd + click per selezioni multiple</small>
+                </div>
+
+                <div class="field">
+                  <label for="fSpec">Specializzazioni</label>
+                  <select id="fSpec" multiple size="4" aria-label="Filtro specializzazioni">
+                    <!-- popolato via JS -->
+                  </select>
+                  <small class="small">Archeologia, trekking, borghi, scuole…</small>
+                </div>
+
+                <div class="field">
+                  <label for="fLingua">Lingue</label>
+                  <select id="fLingua" multiple size="4" aria-label="Filtro lingue">
+                    <!-- popolato via JS -->
+                  </select>
+                  <small class="small">Italiano, English, Français…</small>
+                </div>
+
+              </div>
+            </details>
+
+          </div>
+
+          <hr class="sep" />
+
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap">
+            <span class="badge" id="count">0</span>
+            <span class="note">profili trovati</span>
+          </div>
+
+          <div id="cards" class="cards" style="margin-top:14px"></div>
+
+<p class="mini" style="margin-top:6px">
+  I profili sono presentati in ordine informativo e non costituiscono
+  classifiche o raccomandazioni.
+</p>
+
+          <hr class="sep" />
+        </div>
+
+        <!-- CARD SECONDARIA: INVIO PROFILO -->
+        <div class="card pad" style="margin-top:14px">
+          <h2>Sei una guidao o operi nel territorio?</h2>
+          <p class="note" style="margin-top:6px">
+            Puoi inviare il tuo profilo per essere inserito nell’elenco informativo del sito.
+            Verrà pubblicata una scheda sintetica con i dati che autorizzi a rendere pubblici.
+          </p>
+
+          <a class="btn primary" href="https://forms.gle/KGwqtHRweTPeBy368" target="_blank" rel="noopener">
+            Invia il tuo profilo
+          </a>
+
+          <p class="note" style="margin-top:6px">
+            I dati inviati tramite modulo sono utilizzati esclusivamente per la pubblicazione della scheda richiesta.
+            È possibile richiedere in qualsiasi momento la modifica o la cancellazione.
+          </p>
+
+          <hr class="sep" />
+
+          <h3 style="margin:0 0 10px">Cosa pubblichiamo</h3>
+          <ul class="list">
+            <li>Nome professionale</li>
+            <li>Tipologia di attività (guida turistica, ambientale, accompagnatore, associazione)</li>
+            <li>Ambiti territoriali di riferimento</li>
+            <li>Attività offerte</li>
+            <li>Lingue</li>
+            <li>Contatto pubblico (email o sito)</li>
+          </ul>
+
+          <hr class="sep" />
+
+          <h3 style="margin:0 0 10px">Nota</h3>
+          <p class="note">
+            Abruzzocheviaggi è un archivio informativo. Non intermedia servizi né gestisce prenotazioni.
+            Ogni accordo avviene direttamente tra le parti.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+<div data-include="footer"></div>
+
+  <script src="assets/js/site.js"></script>
+  <script>
+
+    // =========================
+    // DATI + LISTE STANDARD
+    // =========================
+
+    const AMBITI_UFFICIALI = [
+      "Avezzano–Sulmona",
+      "Chieti–Pescara",
+      "L'Aquila",
+      "Lanciano–Vasto",
+      "Teramo"
+    ];
+
+    const TIPI_STANDARD = [
+      "Guida turistica",
+      "Guida ambientale / escursionistica",
+      "Accompagnatore turistico",
+      "Associazione / ente culturale"
+    ];
+
+    const ATTIVITA_STANDARD = [
+      "Visite guidate culturali",
+      "Escursioni / trekking",
+      "Attività per scuole",
+      "Tour enogastronomici",
+      "Esperienze tematiche"
+    ];
+
+    const LINGUE_STANDARD = [
+      "Italiano",
+      "English",
+      "Français",
+      "Deutsch",
+      "Español"
+    ];
+
+    // =========================
+    // HELPERS
+    // =========================
+
+    function norm(s){
+      return (s || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "");
+    }
+
+    function uniqSorted(arr){
+      return Array.from(new Set(arr.filter(Boolean))).sort((a,b)=>a.localeCompare(b));
+    }
+
+    function getSelectedValues(selectEl){
+      return Array.from(selectEl.selectedOptions).map(o => o.value);
+    }
+
+    function fillSelect(selectEl, values){
+      selectEl.innerHTML = "";
+      values.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        selectEl.appendChild(opt);
+      });
+    }
+
+    // =========================
+    // ELEMENTI DOM
+    // =========================
+
+    const elTipo   = document.getElementById("fTipo");
+    const elZona   = document.getElementById("fZona");
+    const elSpec   = document.getElementById("fSpec");
+    const elLingua = document.getElementById("fLingua");
+    const elQ      = document.getElementById("q");
+    const elClear  = document.getElementById("clearFilters");
+
+    const elCards  = document.getElementById("cards");
+    const elCount  = document.getElementById("count");
+
+
+    // =========================
+    // DATI GUIDE
+    // =========================
+
+  const GUIDES = [
+    {
+      name: "Mario Rossi",
+      tipo: "Guida turistica",
+      zones: ["L'Aquila"],
+      activities: ["Visite guidate culturali"],
+      specializations: ["Archeologia", "Borghi"],
+      languages: ["Italiano", "English"],
+      description: "Visite guidate nel territorio aquilano.",
+      contactLabel: "Sito web",
+      contactUrl: "https://example.com"
+    },
+    {
+      name: "Associazione X",
+      tipo: "Associazione / ente culturale",
+      zones: ["Chieti–Pescara"],
+      activities: ["Attività per scuole", "Esperienze tematiche"],
+      specializations: ["Musei", "Didattica"],
+      languages: ["Italiano"],
+      description: "Laboratori e visite per scuole e gruppi.",
+      contactLabel: "Email",
+      contactUrl: "mailto:info@example.com"
+    }
+  ];
+
+    const GUIDES_SRC = (typeof GUIDES !== "undefined") ? GUIDES : [];
+
+    // Per robustezza: gestiamo eventuali nomi campi diversi
+    function readArr(v){
+      if(!v) return [];
+      if(Array.isArray(v)) return v;
+      if(typeof v === "string") return v.split(",").map(s=>s.trim()).filter(Boolean);
+      return [];
+    }
+
+    // Normalizziamo i campi che usiamo
+    const GUIDES_N = GUIDES_SRC.map(g => ({
+      name: g.name || g.nome || "",
+      tipo: g.type || g.tipo || "",
+      zones: readArr(g.zones || g.zone || g.ambiti || g.ambito),
+      activities: readArr(g.activities || g.attivita || g.activity),
+      specs: readArr(g.specializations || g.specs || g.specializzazioni),
+      languages: readArr(g.languages || g.lingue),
+      desc: g.description || g.descrizione || "",
+      contactLabel: (g.contactLabel || g.contattoLabel || "").trim(),
+      contactUrl: (g.contactUrl || g.contattoUrl || "").trim(),
+      contactText: (g.contactText || g.contatto || "").trim(),
+    }));
+
+    // =========================
+    // POPOLA FILTRI
+    // =========================
+
+    function initFilters(){
+      const tipi = uniqSorted([...TIPI_STANDARD, ...GUIDES_N.map(g => g.tipo)]);
+      const zone = uniqSorted([...AMBITI_UFFICIALI, ...GUIDES_N.flatMap(g => g.zones)]);
+      const spec = uniqSorted([...GUIDES_N.flatMap(g => g.specs)]);
+      const ling = uniqSorted([...LINGUE_STANDARD, ...GUIDES_N.flatMap(g => g.languages)]);
+      const att  = uniqSorted([...ATTIVITA_STANDARD, ...GUIDES_N.flatMap(g => g.activities)]);
+
+      fillSelect(elTipo, att.length ? att : tipi);     // manteniamo “Attività” come filtro
+      fillSelect(elZona, zone);
+      fillSelect(elSpec, spec);
+      fillSelect(elLingua, ling);
+    }
+
+    // =========================
+    // RENDER
+    // =========================
+
+    function matchAny(selected, values){
+      if(!selected.length) return true;
+      const set = new Set(values);
+      return selected.some(v => set.has(v));
+    }
+
+    function render(){
+      const q = norm(elQ.value);
+
+      const selZona = getSelectedValues(elZona);
+      const selTipo = getSelectedValues(elTipo);
+      const selSpec = getSelectedValues(elSpec);
+      const selLing = getSelectedValues(elLingua);
+
+      const filtered = GUIDES_N.filter(g => {
+        const hay = norm([g.name, g.tipo, g.desc, ...g.zones, ...g.activities, ...g.specs, ...g.languages].join(" "));
+        const okQ = !q || hay.includes(q);
+
+        const okZona = matchAny(selZona, g.zones);
+        const okTipo = matchAny(selTipo, g.activities.length ? g.activities : [g.tipo]);
+        const okSpec = matchAny(selSpec, g.specs);
+        const okLing = matchAny(selLing, g.languages);
+
+        return okQ && okZona && okTipo && okSpec && okLing;
+      });
+
+      elCount.textContent = filtered.length;
+
+      elCards.innerHTML = filtered.map(g => {
+        const zones = g.zones.length ? g.zones : [];
+        const langs = g.languages.length ? g.languages : [];
+        const acts  = g.activities.length ? g.activities : [];
+        const specs = g.specs.length ? g.specs : [];
+
+        const contact = g.contactUrl
+          ? `<a class="btn" href="${g.contactUrl}" target="_blank" rel="noopener">${g.contactLabel || "Contatto"}</a>`
+          : (g.contactText ? `<span class="mini">${g.contactText}</span>` : "");
+
+        return `
+          <article class="card carditem">
+            <div class="body">
+              <h3>${g.name}</h3>
+              ${g.tipo ? `<p class="badge" style="width:max-content">${g.tipo}</p>` : ""}
+              ${g.desc ? `<p>${g.desc}</p>` : ""}
+
+              <div class="meta" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px">
+                ${zones.slice(0,6).map(z => `<span class="badge">${z}</span>`).join("")}
+                ${langs.slice(0,4).map(l => `<span class="badge">${l}</span>`).join("")}
+              </div>
+
+              ${(acts.length || specs.length) ? `
+                <p class="mini" style="margin-top:10px; color:var(--muted)">
+                  ${acts.length ? `Attività: ${acts.slice(0,6).join(", ")}` : ""}
+                  ${(acts.length && specs.length) ? " • " : ""}
+                  ${specs.length ? `Specializzazioni: ${specs.slice(0,6).join(", ")}` : ""}
+                </p>
+              ` : ""}
+
+              <div style="margin-top:12px">${contact}</div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function clearAll(){
+      [elTipo, elZona, elSpec, elLingua].forEach(sel => {
+        Array.from(sel.options).forEach(o => o.selected = false);
+      });
+      elQ.value = "";
+      render();
+    }
+
+    // =========================
+    // EVENTI
+    // =========================
+    elTipo.addEventListener("change", render);
+    elZona.addEventListener("change", render);
+    elSpec.addEventListener("change", render);
+    elLingua.addEventListener("change", render);
+    elQ.addEventListener("input", render);
+    elClear.addEventListener("click", clearAll);
+
+    initFilters();
+    render();
+  </script>
+</body>
+</html>

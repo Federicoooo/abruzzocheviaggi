@@ -1,0 +1,466 @@
+:root{
+  --bg:#0b1220;
+  --card:#111b2e;
+  --text:#e8eefc;
+  --muted:#b7c3e6;
+  --brand:#5cc8ff;
+  --brand2:#a78bfa;
+  --border:rgba(255,255,255,.12);
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --radius: 18px;
+  --max: 1120px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(92,200,255,.25), transparent 60%),
+    radial-gradient(1000px 600px at 90% 0%, rgba(167,139,250,.22), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  line-height:1.55;
+}
+
+a{color:inherit; text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%; display:block}
+
+.container{
+  width:min(var(--max), calc(100% - 32px));
+  margin-inline:auto;
+}
+
+/* ================= HEADER ================= */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background: rgba(11,18,32,.75);
+  backdrop-filter: blur(12px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 0;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+}
+
+.brand .dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background: linear-gradient(135deg, var(--brand), var(--brand2));
+  box-shadow:0 0 0 6px rgba(92,200,255,.12);
+}
+
+.brand img{
+  height:50px;
+  width:auto;
+  display:block;
+}
+
+.menu{
+  display:flex;
+  gap:14px;
+}
+
+.menu a{
+  padding:9px 10px;
+  border-radius:12px;
+  color:var(--muted);
+  font-weight:650;
+}
+
+.menu a[aria-current="page"]{
+  color:var(--text);
+  background: rgba(255,255,255,.08);
+  border:1px solid var(--border);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  padding:52px 0 24px;
+}
+
+.hero h1{
+  font-size: clamp(28px, 3.2vw, 44px);
+  margin:0 0 12px;
+}
+
+.hero p{
+  color:var(--muted);
+  font-size:1.05rem;
+}
+
+/* ================= SECTION ================= */
+
+.section{
+  padding:18px 0 40px;
+}
+
+.section h2{
+  font-size:1.35rem;
+  margin:0 0 12px;
+}
+
+/* ================= BUTTONS ================= */
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  color:var(--text);
+  font-weight:750;
+  cursor:pointer;
+}
+
+.btn.primary{
+  background: linear-gradient(135deg, rgba(92,200,255,.26), rgba(167,139,250,.20));
+}
+
+/* ================= BADGE ================= */
+
+.badge{
+  display:inline-flex;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.05);
+  border-radius:999px;
+  padding:6px 10px;
+  color:var(--muted);
+  font-weight:650;
+  font-size:.85rem;
+}
+
+/* ================= FILTRI ================= */
+
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:end;
+  margin-top:12px;
+}
+
+.filters .field{
+  display:grid;
+  gap:6px;
+  min-width:220px;
+}
+
+/* ================= CARDS PERCORSI ================= */
+
+.cards{
+  display:flex;
+  flex-wrap:wrap;
+  gap:22px;
+  justify-content:center;
+  margin-top:14px;
+}
+
+.carditem{
+  width:210px;
+}
+
+.carditem .media{
+  width:186px;
+  height:138px;
+  margin:0 auto 8px;
+  background:#fff;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.carditem .media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+.carditem[data-kind="statua"] .media img{
+  object-fit:contain;
+  background:#fff;
+}
+
+.carditem .body{
+  padding:8px 6px 12px;
+  text-align:center;
+}
+
+.carditem h3{
+  font-size:0.98rem;
+  margin:6px 0 4px;
+  line-height:1.2;
+}
+
+.carditem p{
+  font-size:0.88rem;
+  margin:0 0 8px;
+  color:var(--muted);
+}
+
+.carditem .meta{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+  border-top:1px solid var(--border);
+  padding:28px 0 18px;
+  color:var(--muted);
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.1fr 1fr 1fr 1fr;
+  gap:18px;
+}
+
+.footer h4{
+  margin:0 0 10px;
+  font-size:1rem;
+  color:var(--text);
+}
+
+.footer ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:8px;
+}
+
+.footer a{
+  color:var(--muted);
+}
+
+.footer a:hover{
+  color:var(--text);
+}
+
+.footer-bottom{
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  text-align:center;
+  font-size:.85rem;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 920px){
+
+  .menu{
+    display:none;
+  }
+
+  .cards{
+    gap:18px;
+  }
+
+  .carditem{
+    width:100%;
+  }
+
+  .carditem .media{
+    width:198px;
+    height:146px;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media (max-width: 520px){
+
+  .footer-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+
+/* ================= ALTRO/AGGIUNTE ================= */
+
+/* Accessibilità: link "Vai al contenuto" (invisibile finché non premi TAB) */
+.skip-link{
+  position:absolute;
+  left:-999px;
+  top:10px;
+  background:#000;
+  color:#fff;
+  padding:10px 12px;
+  border-radius:12px;
+}
+.skip-link:focus{
+  left:16px;
+  z-index:9999;
+}
+
+/* Bottone menu mobile (nascosto su desktop) */
+.nav-toggle{
+  display:none;
+  font-size:22px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  color:var(--text);
+  padding:8px 12px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+/* Mobile */
+@media (max-width: 920px){
+
+  .nav-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .menu{
+    display:none;
+    flex-direction:column;
+    gap:12px;
+    padding:12px 0;
+  }
+
+  .menu.open{
+    display:flex;
+  }
+
+}
+/* =========================
+   RISORSE - riquadri vetrina
+========================= */
+.risorse-tiles{
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  align-items:stretch;
+  justify-content:center;
+  margin-top:14px;
+}
+
+.risorsa-card{
+  flex:1 1 240px;
+  max-width:260px;
+  text-align:center;
+  text-decoration:none;
+}
+
+.risorsa-img{
+  width:220px;                  /* stesso formato per tutti */
+  height:150px;
+  margin:0 auto 10px;
+  overflow:hidden;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.risorsa-img img{
+  width:100%;
+  height:100%;
+  object-fit:contain;           /* NESSUN taglio: si adatta */
+}
+
+/* ===== SOLO pagina Viaggi in Abruzzo ===== */
+
+.page-viaggi .risorsa-img img{
+  object-fit: cover;
+}
+
+.risorsa-title{
+  margin:12px 0 6px;
+  font-size:1.1rem;
+}
+
+.risorsa-desc{
+  margin:8px 0 6px;
+  color:var(--muted);
+}
+
+/* ===== FIX FILTRI MULTI-SELEZIONE (solo pagina Guide) ===== */
+
+.guide-filters select,
+.guide-filters input{
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.guide-filters select[multiple]{
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+}
+
+/* IMPORTANTISSIMO: colore delle opzioni */
+.guide-filters select[multiple] option{
+  background: #111;   /* coerente col tema scuro */
+  color: #fff;        /* testo visibile */
+}
+
+/* Opzione selezionata: evidenziata */
+.guide-filters select[multiple] option:checked{
+  background: rgba(255,255,255,.18);
+  color: #fff;
+}
+
+
+/* Viaggi dall’Abruzzo: logo compagnie accanto al bottone */
+.dest-cta{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.airline-logos{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.airline-logo{
+  height:26px;
+  width:auto;
+  opacity:.85;
+  transition:.2s;
+}
+
+.airline-logo:hover{
+  opacity:1;
+  transform:scale(1.05);
+}

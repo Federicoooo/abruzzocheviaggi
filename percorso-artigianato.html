@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Percorso artigianato — Abruzzo che Viaggi</title>
+  <meta name="description" content="Percorso città e borghi in Abruzzo con filtro per ambito e ricerca: L'Aquila, Avezzano-Sulmona, Teramo, Chieti-Pescara, Lanciano-Vasto." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Vai al contenuto</a>
+
+<div data-include="header"></div>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <div class="card pad">
+        <h1>Percorso artigianato</h1>
+        <p class="small" style="color:var(--muted); margin:10px 0 0">
+          Filtra per <strong>ambito</strong> e cerca città e borghi.
+        </p>
+
+        <div class="filters" role="region" aria-label="Filtri">
+          <div class="field">
+            <label for="ambito">Ambito</label>
+            <select id="ambito">
+              <option value="TUTTI">Tutti gli ambiti</option>
+            </select>
+          </div>
+
+          <div class="field" style="flex:1; min-width:260px">
+            <label for="q">Cerca</label>
+            <input id="q" type="search" placeholder="Es: Calascio, borgo, città..." />
+          </div>
+        </div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card pad">
+        <h2>Luoghi</h2>
+        <p class="kicker">Risultati: <span id="count">0</span></p>
+
+        <div id="cards" class="cards" aria-live="polite"></div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="assets/js/site.js"></script>
+
+<script>
+/**
+ * Percorso città e borghi (dati dal vecchio sito):
+ * 5 ambiti, 45 schede (immagine + titolo + tipologia).
+ */
+const items = [
+  { ambito: "L'Aquila", titolo: "Poggio Picenze", tipo: "Pietra", img: "assets/img/artigianato/Pietra.jpg" },
+  { ambito: "L'Aquila", titolo: "Pacentro", tipo: "Pietra", img: "assets/img/artigianato/pacentro.jpg" },
+  { ambito: "L'Aquila", titolo: "L'Aquila", tipo: "Pelli e Cuoio", img: "assets/img/artigianato/pelli.jpg" },
+  { ambito: "L'Aquila", titolo: "Castel del Monte", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/castel.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Scanno", tipo: "Ferro e Rame", img: "assets/img/artigianato/fotoferro.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pescocostanzo", tipo: "Ferro e Rame", img: "assets/img/artigianato/pesco.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pescocostanzo", tipo: "Oreficeria", img: "assets/img/artigianato/pesco2.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Sulmona", tipo: "Oreficeria", img: "assets/img/artigianato/sulmona.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Scanno", tipo: "Oreficeria", img: "assets/img/artigianato/scanno.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Scanno", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/scanno2.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pescocostanzo", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/pesco3.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Sulmona", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/sulmona2.jpg" },
+  { ambito: "Teramo", titolo: "Castelli", tipo: "Ceramica", img: "assets/img/artigianato/castelli_ceramica.jpg" },
+  { ambito: "Teramo", titolo: "Tossicia", tipo: "Ferro e Rame", img: "assets/img/artigianato/tossicia.jpg" },
+  { ambito: "Teramo", titolo: "Giulianova", tipo: "Oreficeria", img: "assets/img/artigianato/giulianova.jpg" },
+  { ambito: "Teramo", titolo: "Pietracamela - Nereto", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/pietracamela.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Rapino", tipo: "Ceramica", img: "assets/img/artigianato/rapino.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Guardiagrele", tipo: "Ferro e Rame", img: "assets/img/artigianato/guardiagrele.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Ortona", tipo: "Ferro e Rame", img: "assets/img/artigianato/ortona.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Guardiagrele", tipo: "Oreficeria", img: "assets/img/artigianato/guerdiagrele2.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Lettomanoppello", tipo: "Pietra", img: "assets/img/artigianato/lettomanoppello.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Pretoro", tipo: "Pietra", img: "assets/img/artigianato/pretoro.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Bucchianico", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/bucchianico.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Penne", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/penne.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Lanciano", tipo: "Ceramica", img: "assets/img/artigianato/lanciano.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Lanciano", tipo: "Ferro e Rame", img: "assets/img/artigianato/lanciano2.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Vasto", tipo: "Ferro e Rame", img: "assets/img/artigianato/vasto.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Pennapiedimente", tipo: "Pietra", img: "assets/img/artigianato/pennapiedimente.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Fara San Martino", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/fara.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Taranta Peligna", tipo: "Tessuti e Merletti", img: "assets/img/artigianato/taranta_coperta.jpg" }
+];
+
+const elCards = document.getElementById('cards');
+const elCount = document.getElementById('count');
+const elAmbito = document.getElementById('ambito');
+const elQ = document.getElementById('q');
+
+function norm(s){ return (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""); }
+
+function initAmbiti(){
+  const ambiti = Array.from(new Set(items.map(i => i.ambito))).sort((a,b)=>a.localeCompare(b));
+  for (const a of ambiti){
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    elAmbito.appendChild(opt);
+  }
+}
+
+function render(){
+  const ambito = elAmbito.value;
+  const q = norm(elQ.value);
+
+  const filtered = items.filter(it => {
+    const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+    const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+    const okQ = !q || hay.includes(q);
+    return okAmbito && okQ;
+  });
+
+elCards.innerHTML = filtered.map(it => {
+
+  const kind = (it.tipo || "").toLowerCase().includes("statua")
+           ? "statua"
+           : "foto";
+
+  return `
+    <article class="card carditem" data-ambito="${it.ambito}" data-kind="${kind}">
+      <div class="media">
+        <img src="${it.img}" alt="${it.titolo}">
+      </div>
+      <div class="body">
+        <h3>${it.titolo}</h3>
+<p>${it.tipo}</p>
+<div class="meta">
+  <span class="badge">${it.ambito}</span>
+</div>
+      </div>
+    </article>
+  `;
+}).join('');
+
+  elCount.textContent = filtered.length;
+}
+
+elAmbito.addEventListener('change', render);
+elQ.addEventListener('input', render);
+
+
+initAmbiti();
+render();
+</script>
+</body>
+</html>

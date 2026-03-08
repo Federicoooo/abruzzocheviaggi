@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Percorso castelli — Abruzzo che Viaggi</title>
+  <meta name="description" content="Percorso città e borghi in Abruzzo con filtro per ambito e ricerca: L'Aquila, Avezzano-Sulmona, Teramo, Chieti-Pescara, Lanciano-Vasto." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Vai al contenuto</a>
+
+<div data-include="header"></div>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <div class="card pad">
+        <h1>Percorso castelli</h1>
+        <p class="small" style="color:var(--muted); margin:10px 0 0">
+          Filtra per <strong>ambito</strong> e cerca città e borghi.
+        </p>
+
+        <div class="filters" role="region" aria-label="Filtri">
+          <div class="field">
+            <label for="ambito">Ambito</label>
+            <select id="ambito">
+              <option value="TUTTI">Tutti gli ambiti</option>
+            </select>
+          </div>
+
+          <div class="field" style="flex:1; min-width:260px">
+            <label for="q">Cerca</label>
+            <input id="q" type="search" placeholder="Es: Calascio, borgo, città..." />
+          </div>
+        </div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card pad">
+        <h2>Luoghi</h2>
+        <p class="kicker">Risultati: <span id="count">0</span></p>
+
+        <div id="cards" class="cards" aria-live="polite"></div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="assets/js/site.js"></script>
+
+<script>
+/**
+ * Percorso città e borghi (dati dal vecchio sito):
+ * 5 ambiti, 45 schede (immagine + titolo + tipologia).
+ */
+const items = [
+  { ambito: "L'Aquila", titolo: "Capestrano", tipo: "Castello Piccolomini", img: "assets/img/castelli/capestrano.jpg" },
+  { ambito: "L'Aquila", titolo: "S. Pio delle Camere", tipo: "Castello recinto", img: "assets/img/castelli/CastelloDiSanPioDelleCamere.jpg" },
+  { ambito: "L'Aquila", titolo: "Bominaco - Caporciano", tipo: "Castello", img: "assets/img/castelli/bominaco.jpg" },
+  { ambito: "L'Aquila", titolo: "San Felice d'Ocre - Ocre", tipo: "Castello", img: "assets/img/castelli/ocre.jpg" },
+  { ambito: "L'Aquila", titolo: "Barisciano", tipo: "Castello recinto", img: "assets/img/castelli/bariscian01.jpg" },
+  { ambito: "L'Aquila", titolo: "Fossa", tipo: "Castello recinto", img: "assets/img/castelli/fossa01.jpg" },
+  { ambito: "L'Aquila", titolo: "L'Aquila", tipo: "Forte spagnolo", img: "assets/img/castelli/fig.1-laquila.jpg" },
+  { ambito: "L'Aquila", titolo: "Navelli", tipo: "Palazzo fortificato Santucci", img: "assets/img/castelli/navellik01.jpg" },
+  { ambito: "L'Aquila", titolo: "Calascio", tipo: "Rocca Calascio", img: "assets/img/castelli/calascio.jpg" },
+  { ambito: "L'Aquila", titolo: "Beffi - Acciano", tipo: "Torre", img: "assets/img/castelli/acciano-torre.jpg" },
+  { ambito: "L'Aquila", titolo: "S. Stefano di Sessanio", tipo: "Torre", img: "assets/img/castelli/Sessanio-torre.jpg" },
+  { ambito: "L'Aquila", titolo: "Tione degli Abruzzi", tipo: "Torre", img: "assets/img/castelli/tione.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Ortona dei Marsi", tipo: "Borgo Fortificato", img: "assets/img/castelli/ortona_dei_marsi.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pettorano sul Gizio", tipo: "Castello Cantelmo", img: "assets/img/castelli/fig.1-pettorano.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pacentro", tipo: "Castello Cantelmo-Caldora", img: "assets/img/castelli/fig.1-pacentro.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Anversa degli Abruzzi", tipo: "Castello dei Sangro", img: "assets/img/castelli/anversa.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Carsoli", tipo: "Castello di S. Angelo", img: "assets/img/castelli/carsoli1.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Monte Velino-Mas. d'Albe", tipo: "Castello Orsini", img: "assets/img/castelli/castello-massa-dalbe.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Scurcola Marsicana", tipo: "Castello Orsini", img: "assets/img/castelli/fig.1-scurcola.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Avezzano", tipo: "Castello Orsini-Colonna", img: "assets/img/castelli/avezzano.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Balsorano Veccchio", tipo: "Castello Piccolomini", img: "assets/img/castelli/balsoran01.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Celano", tipo: "Castello Piccolomini", img: "assets/img/castelli/celano.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Ortucchio", tipo: "Castello Piccolomini", img: "assets/img/castelli/ortucchio.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Gagliano Aterno", tipo: "Castello", img: "assets/img/castelli/gagliano.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Roccacasale", tipo: "Castello recinto De Sanctis", img: "assets/img/castelli/roccacasale.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pereto", tipo: "Castello recinto", img: "assets/img/castelli/pereto.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Aielli", tipo: "Torre delle Stelle", img: "assets/img/castelli/aielli-torre.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Introdacqua", tipo: "Torre", img: "assets/img/castelli/introdacqua-torre.jpg" },
+  { ambito: "Teramo", titolo: "Civitella del Tronto", tipo: "Fortezza", img: "assets/img/castelli/fig.2-civitellatronto.jpg" },
+  { ambito: "Teramo", titolo: "Cerrano - Pineto", tipo: "Torre", img: "assets/img/castelli/pineto-torre.jpg" },
+  { ambito: "Teramo", titolo: "Martinsicuro", tipo: "Torre Carlo V", img: "assets/img/castelli/martinsicuro-torre.jpg" },
+  { ambito: "Teramo", titolo: "Montegualtieri - Cermignano", tipo: "Torre Montegualtieri", img: "assets/img/castelli/cermignano-torre.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Serramonacesca", tipo: "Castel Menardo", img: "assets/img/castelli/serramonacesca.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Ortona", tipo: "Castello aragonese", img: "assets/img/castelli/ortona.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Popoli", tipo: "Castello Cantelmo", img: "assets/img/castelli/fig.1-popoli.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Loreto Aprutino", tipo: "Castello Chiola", img: "assets/img/castelli/castello_chiola_loreto_aprutino.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Crecchio", tipo: "Castello De Riseis", img: "assets/img/castelli/crecchio.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Nocciano", tipo: "Castello De Sterlich-Aliprandi", img: "assets/img/castelli/nocciano.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Torre de' Passeri", tipo: "Castello Gizzi", img: "assets/img/castelli/Torre_de_Passeri.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Salle", tipo: "Castello", img: "assets/img/castelli/castello-salle.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Tocco da Casauria", tipo: "Castello", img: "assets/img/castelli/tocco.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Rosciano", tipo: "Torre e Palazzo De Felice", img: "assets/img/castelli/rosciano.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Pescara", tipo: "Torre d'Annunzio", img: "assets/img/castelli/pescara-torre.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Guardiagrele", tipo: "Torre Orsini", img: "assets/img/castelli/guardiagrele-torre.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Carpineto Sinello", tipo: "Castello Bassi", img: "assets/img/castelli/fig.1-carpineto.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Mozzagrogna", tipo: "Castello di Septe", img: "assets/img/castelli/mozzagrogna.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Palena", tipo: "Castello ducale", img: "assets/img/castelli/fig.1-palena.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Palmoli", tipo: "Castello marchesale", img: "assets/img/castelli/Palmoli-castello.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Casoli", tipo: "Castello Masciantonio", img: "assets/img/castelli/casoli.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Roccascalegna", tipo: "Castello", img: "assets/img/castelli/roccascalegna.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Archi", tipo: "Castello", img: "assets/img/castelli/archi.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Montazzoli", tipo: "Castello", img: "assets/img/castelli/montazzoli.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Monteodorisio", tipo: "Castello", img: "assets/img/castelli/monteodorisio.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Vasto", tipo: "Castello", img: "assets/img/castelli/vasto1.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Lanciano", tipo: "Torri Montanare", img: "assets/img/castelli/lanciano-torre.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Vasto", tipo: "Torre Punta Penna", img: "assets/img/castelli/vasto-torre.jpg" }
+];
+
+const elCards = document.getElementById('cards');
+const elCount = document.getElementById('count');
+const elAmbito = document.getElementById('ambito');
+const elQ = document.getElementById('q');
+
+function norm(s){ return (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""); }
+
+function initAmbiti(){
+  const ambiti = Array.from(new Set(items.map(i => i.ambito))).sort((a,b)=>a.localeCompare(b));
+  for (const a of ambiti){
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    elAmbito.appendChild(opt);
+  }
+}
+
+function render(){
+  const ambito = elAmbito.value;
+  const q = norm(elQ.value);
+
+  const filtered = items.filter(it => {
+    const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+    const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+    const okQ = !q || hay.includes(q);
+    return okAmbito && okQ;
+  });
+
+elCards.innerHTML = filtered.map(it => {
+
+  const kind = (it.tipo || "").toLowerCase().includes("statua")
+           ? "statua"
+           : "foto";
+
+  return `
+    <article class="card carditem" data-ambito="${it.ambito}" data-kind="${kind}">
+      <div class="media">
+        <img src="${it.img}" alt="${it.titolo}">
+      </div>
+      <div class="body">
+        <h3>${it.titolo}</h3>
+<p>${it.tipo}</p>
+<div class="meta">
+  <span class="badge">${it.ambito}</span>
+</div>
+      </div>
+    </article>
+  `;
+}).join('');
+
+  elCount.textContent = filtered.length;
+}
+
+elAmbito.addEventListener('change', render);
+elQ.addEventListener('input', render);
+
+
+initAmbiti();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Percorso barocco — Abruzzo che Viaggi</title>
+  <meta name="description" content="Percorso città e borghi in Abruzzo con filtro per ambito e ricerca: L'Aquila, Avezzano-Sulmona, Teramo, Chieti-Pescara, Lanciano-Vasto." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Vai al contenuto</a>
+
+<div data-include="header"></div>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <div class="card pad">
+        <h1>Percorso barocco</h1>
+        <p class="small" style="color:var(--muted); margin:10px 0 0">
+          Filtra per <strong>ambito</strong> e cerca città e borghi.
+        </p>
+
+        <div class="filters" role="region" aria-label="Filtri">
+          <div class="field">
+            <label for="ambito">Ambito</label>
+            <select id="ambito">
+              <option value="TUTTI">Tutti gli ambiti</option>
+            </select>
+          </div>
+
+          <div class="field" style="flex:1; min-width:260px">
+            <label for="q">Cerca</label>
+            <input id="q" type="search" placeholder="Es: Calascio, borgo, città..." />
+          </div>
+        </div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card pad">
+        <h2>Luoghi</h2>
+        <p class="kicker">Risultati: <span id="count">0</span></p>
+
+        <div id="cards" class="cards" aria-live="polite"></div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="assets/js/site.js"></script>
+
+<script>
+/**
+ * Percorso città e borghi (dati dal vecchio sito):
+ * 5 ambiti, 45 schede (immagine + titolo + tipologia).
+ */
+const items = [
+  { ambito: "L'Aquila", titolo: "L'Aquila", tipo: "S. Maria del Suffragio", img: "assets/img/barocco/suffragio.jpg" },
+  { ambito: "L'Aquila", titolo: "L'Aquila", tipo: "S. Maria di Collemaggio", img: "assets/img/barocco/collemaggio.jpg" },
+  { ambito: "L'Aquila", titolo: "Capestrano", tipo: "S. Maria della Pace", img: "assets/img/barocco/capestano.jpg" },
+  { ambito: "L'Aquila", titolo: "Fagnano Alto", tipo: "S. Giovanni Battista", img: "assets/img/barocco/fagnano.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Sulmona", tipo: "S. Spirito", img: "assets/img/barocco/Abbaziaspirito.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pescocostanzo", tipo: "S. Maria del Suffragio", img: "assets/img/barocco/fig.2suffragio.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Castel di Sangro", tipo: "S. Maria Assunta", img: "assets/img/barocco/casteldisangro10.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Gagliano Aterno", tipo: "S. Chiara", img: "assets/img/barocco/gagliano.jpg" },
+  { ambito: "Teramo", titolo: "Teramo", tipo: "S. Spirito", img: "assets/img/barocco/fig.1spirito.jpg" },
+  { ambito: "Teramo", titolo: "Atri", tipo: "S. Francesco", img: "assets/img/barocco/fig.2atri.JPG" },
+  { ambito: "Teramo", titolo: "Montefino", tipo: "S. Giacomo", img: "assets/img/barocco/fig.1giacomo.jpg" },
+  { ambito: "Teramo", titolo: "Sant'Omero", tipo: "SS. Annunziata", img: "assets/img/barocco/fig.1annunziata.jpg" },
+  { ambito: "Teramo", titolo: "Giulianova", tipo: "Sant'Antonio", img: "assets/img/barocco/giulianova.jpg" },
+  { ambito: "Teramo", titolo: "Bisenti", tipo: "S. Maria degli Angeli", img: "assets/img/barocco/Bisenti_chiesa_madre.jpg" },
+  { ambito: "Teramo", titolo: "Civitella del Tronto", tipo: "S. Francesco", img: "assets/img/barocco/civitella2.jpg" },
+  { ambito: "Teramo", titolo: "Roseto degli Abruzzi", tipo: "Chiesa dell'Annunziata e di Sant'Antimo", img: "assets/img/barocco/roseto.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Penne", tipo: "Madonna del Carmine", img: "assets/img/barocco/fig.2carmi.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Chieti", tipo: "S. Domenico", img: "assets/img/barocco/chieti.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Città Sant'Angelo", tipo: "S. Agostino", img: "assets/img/barocco/fig.1agostino.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Popoli", tipo: "SS. Trinità", img: "assets/img/barocco/fig.1trinita.JPG" },
+  { ambito: "Chieti-Pescara", titolo: "Pescara", tipo: "Madonna dei Sette Dolori", img: "assets/img/barocco/pescara_mdolori.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Bucchianico", tipo: "S. Francesco", img: "assets/img/barocco/bucchianico.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "San Valentino in Abruzzo Citeriore", tipo: "S. Valentino e Damiano", img: "assets/img/barocco/fig.1valentino.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Alanno", tipo: "S. Maria delle Grazie", img: "assets/img/barocco/alanno.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Pietranico", tipo: "S. Maria della Croce", img: "assets/img/barocco/pietranico.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Loreto Aprutino", tipo: "S. Francesco", img: "assets/img/barocco/loreto.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Guardiagrele", tipo: "S. Francesco", img: "assets/img/barocco/guardiagrele.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Villamagna - Spoltore", tipo: "S. Maria Maggiore - S. Panfilo fuori mura", img: "assets/img/barocco/villamagna.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Lanciano", tipo: "Madonna del Ponte", img: "assets/img/barocco/Madonna_del_Ponte.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Atessa", tipo: "S. Leucio", img: "assets/img/barocco/San_Leucio_Atessa.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Vasto", tipo: "S. Maria del Carmine", img: "assets/img/barocco/vasto.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Palena", tipo: "S. Maria del Rosario", img: "assets/img/barocco/palena.jpg" }
+];
+
+const elCards = document.getElementById('cards');
+const elCount = document.getElementById('count');
+const elAmbito = document.getElementById('ambito');
+const elQ = document.getElementById('q');
+
+function norm(s){ return (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""); }
+
+function initAmbiti(){
+  const ambiti = Array.from(new Set(items.map(i => i.ambito))).sort((a,b)=>a.localeCompare(b));
+  for (const a of ambiti){
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    elAmbito.appendChild(opt);
+  }
+}
+
+function render(){
+  const ambito = elAmbito.value;
+  const q = norm(elQ.value);
+
+  const filtered = items.filter(it => {
+    const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+    const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+    const okQ = !q || hay.includes(q);
+    return okAmbito && okQ;
+  });
+
+elCards.innerHTML = filtered.map(it => {
+
+  const kind = (it.tipo || "").toLowerCase().includes("statua")
+           ? "statua"
+           : "foto";
+
+  return `
+    <article class="card carditem" data-ambito="${it.ambito}" data-kind="${kind}">
+      <div class="media">
+        <img src="${it.img}" alt="${it.titolo}">
+      </div>
+      <div class="body">
+        <h3>${it.titolo}</h3>
+<p>${it.tipo}</p>
+<div class="meta">
+  <span class="badge">${it.ambito}</span>
+</div>
+      </div>
+    </article>
+  `;
+}).join('');
+
+  elCount.textContent = filtered.length;
+}
+
+elAmbito.addEventListener('change', render);
+elQ.addEventListener('input', render);
+
+
+initAmbiti();
+render();
+</script>
+</body>
+</html>

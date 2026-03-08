@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Viaggi dall’Abruzzo – Abruzzo che Viaggi</title>
+  <meta name="description" content="Destinazioni raggiungibili con voli diretti dall’Aeroporto d’Abruzzo (Pescara), con ricerca e filtri." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+<style>
+  /* Forza 4 card per riga (desktop) + breakpoint */
+  .risorse-tiles{
+    display:grid;
+    gap:18px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  @media (max-width:1100px){ .risorse-tiles{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+  @media (max-width:820px){  .risorse-tiles{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+  @media (max-width:520px){  .risorse-tiles{ grid-template-columns:1fr; } }
+
+  /* --- Collegamenti diretti dall’aeroporto (chips + modal) --- */
+  .dest-cover{
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: rgba(255,255,255,.03);
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+  .dest-cover .sub{
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .dest-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+    min-width:0;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    border:1px solid var(--border);
+    background: rgba(255,255,255,.05);
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: .92rem;
+    line-height: 1.1;
+    max-width:100%;
+    white-space:normal;
+  }
+  .chip small{
+    font-size: .92rem;
+    opacity: .9;
+  }
+  .chip.more{
+    cursor:pointer;
+    font-weight: 800;
+  }
+  .dest-links{
+    margin-top:10px;
+    font-size:.92rem;
+  }
+  .dest-links a{
+    color: var(--text);
+    opacity:.9;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Modal leggero (solo per questa pagina) */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background: rgba(0,0,0,.75);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index: 9999;
+    padding: 18px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal{
+    width: min(820px, 94vw);
+    max-height: 85vh;
+    overflow:auto;
+    background: #111;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 16px;
+    padding: 14px;
+  }
+  .modal header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .modal h3{
+    margin:0;
+    font-size: 1.05rem;
+  }
+  .modal .close{
+    border:1px solid rgba(255,255,255,.25);
+    background: rgba(255,255,255,.08);
+    color:#fff;
+    border-radius: 12px;
+    padding: 8px 10px;
+    cursor:pointer;
+    font-weight: 800;
+  }
+
+/* --- Cover grafica chiara al posto della foto --- */
+.dest-cover-hero{
+  position: relative;
+  border-radius: 14px;
+  border: 1px solid rgba(92, 200, 255, .26);
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #dff1ff 50%,
+    #edf5ff 100%
+  );
+  color: #111;
+  padding: 12px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 rgba(0,0,0,.03),
+    0 10px 26px rgba(92,200,255,.16);
+}
+
+/* icone */
+.dest-cover-hero .plane{
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-size: 19px;
+  opacity: 1;
+  line-height: 1;
+}
+
+.dest-cover-hero .transport{
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  font-size: 18px;
+  opacity: .70;
+  line-height: 1;
+}
+
+/* titolo HUB */
+.dest-cover-hero .hero-title{
+  margin: 0;
+  padding-left: 26px;   /* spazio per aereo */
+  padding-right: 26px;  /* spazio per mezzo */
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: #111;
+}
+
+.dest-cover-hero .cover-sub{
+  font-size: .64em;
+  font-weight: 800;
+  color: rgba(0,0,0,.6);
+  text-transform: none;
+}
+
+/* chips */
+.dest-cover-hero .hero-chips{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px; /* spazio sotto HUB */
+  min-width: 0;
+}
+
+.dest-cover-hero .chip{
+  background: rgba(0,0,0,.06);
+  border-color: rgba(0,0,0,.14);
+  padding: 5px 9px;      /* sposto qui (vale per tutti) */
+  font-size: .88rem;     /* sposto qui (vale per tutti) */
+}
+
+.dest-cover-hero .chip.more{
+  background: rgba(0,0,0,.10);
+  font-weight: 800;
+}
+
+/* hint */
+.dest-cover-hero .hero-hint{
+  font-size: .92rem;
+  color: var(--muted);
+  padding-left: 26px;
+}
+.airline-logos{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.airline-logo{
+  height:12px;
+  width:auto;
+  max-width:60px;
+  object-fit:contain;
+}
+
+/* CTA più compatta: solo in questa pagina */
+.risorsa-card .dest-cta .btn.primary{
+  padding: 7px 10px;
+  font-size: .9rem;
+  border-radius: 10px;
+}
+
+/* Loghi compagnie più visibili */
+.risorsa-card .airline-logos{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.risorsa-card .airline-logos .airline-logo{
+  height: 14px;     /* ← aumenta qui */
+  width: auto;
+  max-width: 80px;
+  object-fit: contain;
+  opacity: .95;
+}
+</style>
+
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Vai al contenuto</a>
+  <div data-include="header"></div>
+
+  <main id="main">
+
+    <section class="hero">
+      <div class="container">
+        <div class="card pad">
+          <h1>Viaggi dall’Abruzzo – Partenze dall’aeroporto</h1>
+          <p class="small intro-note">
+  ✈️ Voli in partenza dall’Aeroporto d’Abruzzo (Pescara) ma anche
+  <strong>destinazioni raggiungibili direttamente dagli aeroporti di arrivo</strong>
+  tramite collegamenti 🚌 senza cambi intermedi.
+  <strong>Tempi medi di percorrenza e mezzi utilizzati.</strong>
+</p>
+
+<p class="small intro-note">
+  Tratte, frequenze e orari possono subire variazioni: verifica sempre
+  la disponibilità dei collegamenti e la compatibilità degli orari sui
+  siti ufficiali.
+</p>
+
+<p class="mini" style="margin-top:8px; color:var(--muted)">
+  Aggiornamento dati: marzo 2026.
+</p>
+        </div>
+
+        <div class="card pad" style="margin-top:14px" role="region" aria-label="Filtri destinazioni">
+          <div class="filters" style="margin-top:0">
+            <div class="field" style="flex:1; min-width:260px">
+              <label for="q">Cerca</label>
+              <input id="q" type="search" placeholder="Es: Londra, Torino, Valencia…" />
+            </div>
+
+            <div class="field">
+              <label for="tipo">Destinazioni</label>
+              <select id="tipo">
+                <option value="TUTTI">Tutte</option>
+                <option value="Nazionale">Nazionali</option>
+                <option value="Internazionale">Internazionali</option>
+              </select>
+            </div>
+
+            <div class="field" style="min-width:auto">
+              <button class="btn" id="clearFilters" type="button">Pulisci</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card pad">
+          <div id="cards" class="risorse-tiles" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- Modal: collegamenti diretti dall’aeroporto -->
+  <div class="modal-overlay" id="connModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="connModalTitle">
+      <header>
+        <h3 id="connModalTitle">Dettagli</h3>
+        <button class="close" type="button" id="connModalClose">Chiudi</button>
+      </header>
+      <div id="connModalBody"></div>
+    </div>
+  </div>
+
+  <div data-include="footer"></div>
+
+  <script src="assets/js/site.js"></script>
+
+  <script>
+  // =========================
+  // CONFIG
+  // =========================
+
+  const AIRLINES = {
+    ryanair: { name: "Ryanair", url: "https://www.ryanair.com", logo: "assets/img/airlines/ryanair.svg" },
+    wizz:    { name: "Wizz Air", url: "https://wizzair.com", logo: "assets/img/airlines/wizzair.svg" },
+    luxair:  { name: "Luxair", url: "https://www.luxair.lu", logo: "assets/img/airlines/luxair.svg" },
+  };
+
+  function skyRoute(fromIata, toIata){
+    return `https://www.skyscanner.it/rotte/${fromIata.toLowerCase()}/${toIata.toLowerCase()}/`;
+  }
+
+  const FROM = "psr";
+
+  const FALLBACK_IMG = "data:image/svg+xml;utf8," + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#111b2e"/>
+          <stop offset="1" stop-color="#0b1220"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="800" fill="url(#g)"/>
+      <g fill="rgba(255,255,255,0.14)">
+        <circle cx="220" cy="220" r="90"/>
+        <circle cx="320" cy="210" r="70"/>
+        <circle cx="390" cy="245" r="80"/>
+        <rect x="180" y="250" width="280" height="90" rx="45"/>
+      </g>
+      <text x="60" y="740" fill="rgba(255,255,255,0.45)" font-size="34" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial">
+        Abruzzo che Viaggi — destinazione
+      </text>
+    </svg>
+  `);
+
+  function imgPath(slug){
+    return `assets/img/destinazioni/${slug}.jpg`;
+  }
+
+  const items = [
+    { tipo:"Nazionale", citta:"Alghero",             iata:"AHO", img:imgPath("alghero"),           airlines:["ryanair"] },
+    { tipo:"Nazionale", citta:"Cagliari",            iata:"CAG", img:imgPath("cagliari"),          airlines:["ryanair"] },
+    { tipo:"Nazionale", citta:"Catania",             iata:"CTA", img:imgPath("catania"),           airlines:["ryanair"] },
+    { tipo:"Nazionale", citta:"Milano Bergamo",      iata:"BGY", img:imgPath("milano-bergamo"),    airlines:["ryanair"] },
+    { tipo:"Nazionale", citta:"Milano Malpensa",     iata:"MXP", img:imgPath("milano-malpensa"),   airlines:["ryanair"] },
+    { tipo:"Nazionale", citta:"Torino",              iata:"TRN", img:imgPath("torino"),            airlines:["ryanair"] },
+    { tipo:"Nazionale", citta:"Trapani–Marsala",     iata:"TPS", img:imgPath("trapani"),           airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Barcellona (Girona)",      iata:"GRO", img:imgPath("girona"),            airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Breslavia (Wrocław)",      iata:"WRO", img:imgPath("wroclaw"),           airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Bruxelles (Charleroi)",    iata:"CRL", img:imgPath("charleroi"),         airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Bucarest (Otopeni)",       iata:"OTP", img:imgPath("bucarest"),          airlines:["ryanair","wizz"] },
+    { tipo:"Internazionale", citta:"Cracovia",                 iata:"KRK", img:imgPath("cracovia"),          airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Düsseldorf (Weeze)",       iata:"NRN", img:imgPath("weeze"),             airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Francoforte (Hahn)",       iata:"HHN", img:imgPath("francoforte-hahn"),  airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Kaunas",                   iata:"KUN", img:imgPath("kaunas"),            airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Londra (Stansted)",        iata:"STN", img:imgPath("londra"),            airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Lussemburgo",              iata:"LUX", img:imgPath("lussemburgo"),       airlines:["luxair"] },
+    { tipo:"Internazionale", citta:"Malta",                    iata:"MLA", img:imgPath("malta"),             airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Memmingen",                iata:"FMM", img:imgPath("memmingen"),         airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Praga",                    iata:"PRG", img:imgPath("praga"),             airlines:["ryanair"] },
+    { tipo:"Internazionale", citta:"Tirana",                   iata:"TIA", img:imgPath("tirana"),            airlines:["ryanair","wizz"] },
+    { tipo:"Internazionale", citta:"Valencia",                 iata:"VLC", img:imgPath("valencia"),          airlines:["ryanair"] }
+  ];
+
+  const JSON_PATH = "assets/data/airport_connections_psr.json";
+  let AIRPORT_CONNECTIONS = {};
+
+  async function loadConnections(){
+    try{
+      const res = await fetch(JSON_PATH, { cache: "no-store" });
+      if(!res.ok) throw new Error("JSON non trovato: " + JSON_PATH);
+      const data = await res.json();
+      AIRPORT_CONNECTIONS = data && data.airports ? data.airports : {};
+    }catch(e){
+      console.warn(e);
+      AIRPORT_CONNECTIONS = {};
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str ?? "")
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'",'&#39;');
+  }
+
+  function connectionsChipsHtml(iata){
+    const cfg = AIRPORT_CONNECTIONS[iata];
+    if(!cfg || !Array.isArray(cfg.direct) || cfg.direct.length === 0) return "";
+
+    const direct = cfg.direct;
+    const max = 3;
+
+    const head = direct.filter(x => (x.city || "").trim()).slice(0, max);
+    const rest = Math.max(0, direct.length - head.length);
+
+    const chips = head.map(x =>
+      `<button class="chip open-all" type="button" data-iata="${escapeHtml(iata)}"><strong>${escapeHtml(x.city)}</strong></button>`
+    ).join("");
+
+    const more = rest > 0
+      ? `<button class="chip more" type="button" data-open-modal="1" data-iata="${escapeHtml(iata)}">+${rest}</button>`
+      : "";
+
+    return `${chips}${more}`;
+  }
+
+  function connectionsLinkHtml(iata){
+    const cfg = AIRPORT_CONNECTIONS[iata];
+    const link = (cfg && (cfg.transport_url || "").trim()) || "";
+    return link
+      ? `<div class="dest-links"><a href="${link}" target="_blank" rel="noopener">Trasporti (fonte)</a></div>`
+      : "";
+  }
+
+  function modeIcon(mode){
+    const m = (mode || "").toLowerCase();
+    if(!m) return "🚌";
+    if(m.includes("tren")) return "🚆";
+    if(m.includes("tram")) return "🚋";
+    if(m.includes("metr")) return "🚇";
+    if(m.includes("bus") || m.includes("shuttle") || m.includes("navett")) return "🚌";
+    return "🚌";
+  }
+
+  function prettyMode(mode){
+    const m = (mode || "").toLowerCase().trim();
+    if(!m) return "";
+    const map = {
+      "bus": "Bus",
+      "treno": "Treno",
+      "metro": "Metro",
+      "tram": "Tram",
+      "tram/bus": "Tram/Bus",
+      "bus/treno": "Bus/Treno",
+      "shuttle": "Navetta"
+    };
+    return map[m] || mode;
+  }
+
+  function dominantMode(iata){
+    const cfg = AIRPORT_CONNECTIONS[iata];
+    if(!cfg || !Array.isArray(cfg.direct) || !cfg.direct.length) return "";
+    const counts = {};
+    for(const x of cfg.direct){
+      const mm = (x.mode || "").toLowerCase().trim();
+      if(!mm) continue;
+      counts[mm] = (counts[mm] || 0) + 1;
+    }
+    let best = "", bestN = 0;
+    for(const k in counts){
+      if(counts[k] > bestN){ bestN = counts[k]; best = k; }
+    }
+    return best;
+  }
+
+  function connectionsHeroHtml(iata, title){
+    const chips = connectionsChipsHtml(iata);
+    const transport = `<span class="transport" aria-hidden="true">${modeIcon(dominantMode(iata))}</span>`;
+    const titleHtml = `
+      <h2 class="hero-title">
+        ${escapeHtml(title || "")}
+        <span class="cover-sub">(${escapeHtml(iata)})</span>
+      </h2>
+    `;
+
+    if(!chips){
+      return `
+        <div class="dest-cover-hero">
+          <span class="plane" aria-hidden="true">✈️</span>
+          ${transport}
+          ${titleHtml}
+          <div class="hero-hint">Collegamenti in aggiornamento</div>
+        </div>
+      `;
+    }
+    return `
+      <div class="dest-cover-hero">
+        <span class="plane" aria-hidden="true">✈️</span>
+        ${transport}
+        ${titleHtml}
+        <div class="hero-chips">${chips}</div>
+      </div>
+    `;
+  }
+
+  const modalEl = document.getElementById("connModal");
+  const modalTitle = document.getElementById("connModalTitle");
+  const modalBody = document.getElementById("connModalBody");
+  const modalClose = document.getElementById("connModalClose");
+
+  function openModal(title, html){
+    if(!modalEl) return;
+    modalTitle.textContent = title;
+    modalBody.innerHTML = html;
+    modalEl.classList.add("open");
+    modalEl.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal(){
+    if(!modalEl) return;
+    modalEl.classList.remove("open");
+    modalEl.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+  }
+  modalClose?.addEventListener("click", closeModal);
+  modalEl?.addEventListener("click", (e)=>{ if(e.target === modalEl) closeModal(); });
+  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape" && modalEl?.classList.contains("open")) closeModal(); });
+
+  const elCards = document.getElementById('cards');
+  const elQ = document.getElementById('q');
+  const elTipo = document.getElementById('tipo');
+  const elClear = document.getElementById('clearFilters');
+
+  function norm(s){
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
+  }
+
+  function openConnectionsModal(iata){
+    const cfg = AIRPORT_CONNECTIONS[iata];
+    if(!cfg || !Array.isArray(cfg.direct)) return;
+
+    const list = cfg.direct.map(x => {
+      const city = escapeHtml(x.city || "");
+      const mode = x.mode ? prettyMode(x.mode) : "";
+      const time = (x.time || "").trim();
+      const modeHtml = mode ? ` <span style="opacity:.85">– ${escapeHtml(mode)}</span>` : "";
+      const timeHtml = time ? ` <span style="opacity:.85; margin-left:6px">(${escapeHtml(time)})</span>` : "";
+      return `<li>${city}${modeHtml}${timeHtml}</li>`;
+    }).join("");
+
+    const title = cfg.name ? `Da ${iata} – ${cfg.name}` : `Da ${iata}`;
+    openModal(title, `<ul style="margin:0;padding-left:18px;line-height:1.6">${list}</ul>`);
+  }
+
+  function render(){
+    const q = norm(elQ.value);
+    const tipo = elTipo.value;
+
+    const filtered = items.filter(it => {
+      const okTipo = (tipo === "TUTTI") || (it.tipo === tipo);
+      const hay = norm(`${it.citta} ${it.iata} ${it.tipo}`);
+      const okQ = !q || hay.includes(q);
+      return okTipo && okQ;
+    });
+
+    elCards.innerHTML = filtered.map(it => {
+      const sk = skyRoute(FROM, it.iata);
+
+      const logos = (it.airlines || [])
+        .filter(k => AIRLINES[k])
+        .map(k => {
+          const a = AIRLINES[k];
+          return `
+            <a href="${a.url}" target="_blank" rel="noopener" title="${a.name}">
+              <img class="airline-logo" src="${a.logo}" alt="${a.name}">
+            </a>
+          `;
+        }).join("");
+
+      return `
+        <article class="card pad risorsa-card" data-tipo="${it.tipo}">
+          ${connectionsHeroHtml(it.iata, it.citta)}
+
+          <div class="dest-cta">
+            <a class="btn primary" href="${sk}" target="_blank" rel="noopener">Cerca voli</a>
+
+            <div class="airline-logos" aria-label="Compagnie aeree">
+              ${logos || `<span class="small" style="color:var(--muted)">Compagnia: verifica</span>`}
+            </div>
+          </div>
+
+          ${connectionsLinkHtml(it.iata) || ``}
+        </article>
+      `;
+    }).join('');
+
+    elCards.querySelectorAll('button[data-open-modal="1"]').forEach(btn => {
+      btn.addEventListener("click", () => openConnectionsModal(btn.dataset.iata));
+    });
+
+    elCards.querySelectorAll('.chip.open-all').forEach(btn => {
+      btn.addEventListener("click", () => openConnectionsModal(btn.dataset.iata));
+    });
+  }
+
+  function clearAll(){
+    elQ.value = "";
+    elTipo.value = "TUTTI";
+    render();
+  }
+
+  elQ.addEventListener('input', render);
+  elTipo.addEventListener('change', render);
+  elClear.addEventListener('click', clearAll);
+
+  (async function init(){
+    await loadConnections();
+    render();
+  })();
+
+  </script>
+</body>
+</html>

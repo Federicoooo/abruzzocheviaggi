@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eventi & tradizioni – Abruzzo che Viaggi</title>
+  <meta name="description" content="Eventi e tradizioni in Abruzzo con filtro per ambito e ricerca: L'Aquila, Avezzano–Sulmona, Teramo, Chieti–Pescara, Lanciano–Vasto." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Vai al contenuto</a>
+
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <div class="card pad">
+          <h1>Eventi &amp; tradizioni</h1>
+          <p>
+            Filtra per <strong>ambito</strong> e cerca eventi, riti e tradizioni.
+            (Pagina in costruzione: verrà ampliata progressivamente.)
+          </p>
+
+          <div class="filters" role="region" aria-label="Filtri">
+            <div class="field">
+              <label for="ambito">Ambito</label>
+              <select id="ambito">
+                <option value="TUTTI">Tutti gli ambiti</option>
+              </select>
+            </div>
+
+            <div class="field" style="flex:1; min-width:260px">
+              <label for="q">Cerca</label>
+              <input id="q" type="search" placeholder="Es: Perdonanza, Serpari, Farchie..." />
+            </div>
+          </div>
+
+          <hr class="sep" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card pad">
+          <h2>Eventi</h2>
+          <p class="kicker">Risultati: <span id="count">0</span></p>
+
+          <div id="cards" class="cards" aria-live="polite"></div>
+
+          <hr class="sep" />
+         </div>
+      </div>
+    </section>
+  </main>
+
+<div data-include="footer"></div>
+
+  <script src="assets/js/site.js"></script>
+
+  <script>
+  // Base dati iniziale (eventi citati in precedenza).
+  // Per le immagini: inserisci i tuoi file (per ora puoi usare placeholder).
+const items = [
+
+  /* ===== L'AQUILA ===== */
+  {
+    ambito:"L'Aquila",
+    titolo:"Perdonanza Celestiniana – L'Aquila",
+    tipo:"Rito civico e religioso medievale",
+    img:"assets/img/eventi/perdonanza-celestiniana.jpg"
+  },
+  {
+    ambito:"L'Aquila",
+    titolo:"Festa di Sant’Agnese – L'Aquila",
+    tipo:"Tradizione popolare cittadina",
+    img:"assets/img/eventi/sant-agnese.jpg"
+  },
+  {
+    ambito:"L'Aquila",
+    titolo:"Festa del Narciso – Rocca di Mezzo",
+    tipo:"Festa stagionale comunitaria",
+    img:"assets/img/eventi/narciso.jpg"
+  },
+  {
+    ambito:"L'Aquila",
+    titolo:"Presepe Vivente – Rivisondoli",
+    tipo:"Tradizione pastorale natalizia",
+    img:"assets/img/eventi/presepe-rivisondoli.jpg"
+  },
+
+  /* ===== AVEZZANO–SULMONA ===== */
+  {
+    ambito:"Avezzano–Sulmona",
+    titolo:"Festa dei Serpari – Cocullo",
+    tipo:"Rito tradizionale arcaico",
+    img:"assets/img/eventi/serpari-cocullo.jpg"
+  },
+  {
+    ambito:"Avezzano–Sulmona",
+    titolo:"Madonna che Scappa – Sulmona",
+    tipo:"Rito pasquale",
+    img:"assets/img/eventi/madonna-sulmona.jpg"
+  },
+  {
+    ambito:"Avezzano–Sulmona",
+    titolo:"Giostra Cavalleresca – Sulmona",
+    tipo:"Rievocazione storica",
+    img:"assets/img/eventi/giostra-cavalleresca-sulmona.png"
+  },
+
+  /* ===== TERAMO ===== */
+  {
+    ambito:"Teramo",
+    titolo:"I Faugni – Atri",
+    tipo:"Rito del fuoco",
+    img:"assets/img/eventi/faugni-atri.jpg"
+  }, 
+
+ /* ===== CHIETI–PESCARA ===== */
+  
+  {
+    ambito:"Chieti–Pescara",
+    titolo:"Carnevale d'Abruzzo – Francavilla al Mare",
+    tipo:"Tradizione carnevalesca storica",
+    img:"assets/img/eventi/carnevale-francavilla.jpg"
+  },
+{
+    ambito:"Chieti–Pescara",
+    titolo:"Le Farchie – Fara Filiorum Petri",
+    tipo:"Rito del fuoco",
+    img:"assets/img/eventi/farchie.png"
+  },
+  {
+    ambito:"Chieti–Pescara",
+    titolo:"Processione del Venerdì Santo – Chieti",
+    tipo:"Tradizione confraternale",
+    img:"assets/img/eventi/processione-chieti.jpg"
+  },
+
+  /* ===== LANCIANO VASTO ===== */
+{
+  ambito:"Lanciano–Vasto",
+  titolo:"Processione degli incappucciati – Lanciano",
+  tipo:"Tradizione confraternale",
+  img:"assets/img/eventi/incappucciati.png"
+}
+
+];
+  const elCards = document.getElementById('cards');
+  const elCount = document.getElementById('count');
+  const elAmbito = document.getElementById('ambito');
+  const elQ = document.getElementById('q');
+
+  function norm(s){
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "");
+  }
+
+  function initAmbiti(){
+    const ambiti = Array.from(new Set(items.map(i => i.ambito)))
+      .sort((a,b)=>a.localeCompare(b));
+    for (const a of ambiti){
+      const opt = document.createElement('option');
+      opt.value = a;
+      opt.textContent = a;
+      elAmbito.appendChild(opt);
+    }
+  }
+
+  function render(){
+    const ambito = elAmbito.value;
+    const q = norm(elQ.value);
+
+    const filtered = items.filter(it => {
+      const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+      const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+      const okQ = !q || hay.includes(q);
+      return okAmbito && okQ;
+    });
+
+    elCards.innerHTML = filtered.map(it => {
+      return `
+        <article class="card carditem" data-ambito="${it.ambito}" data-kind="foto">
+          <div class="media">
+            <img src="${it.img}" alt="${it.titolo}">
+          </div>
+          <div class="body">
+            <h3>${it.titolo}</h3>
+         <p>${it.tipo}</p>
+</p>
+            <div class="meta">
+              <span class="badge">${it.ambito}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    elCount.textContent = filtered.length;
+  }
+
+  elAmbito.addEventListener('change', render);
+  elQ.addEventListener('input', render);
+
+  initAmbiti();
+  render();
+  </script>
+</body>
+</html>

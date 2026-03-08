@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Percorso dannunziano — Abruzzo che Viaggi</title>
+  <meta name="description" content="Percorso città e borghi in Abruzzo con filtro per ambito e ricerca: L'Aquila, Avezzano-Sulmona, Teramo, Chieti-Pescara, Lanciano-Vasto." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Vai al contenuto</a>
+
+<div data-include="header"></div>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <div class="card pad">
+        <h1>Percorso dannunziano</h1>
+        <p class="small" style="color:var(--muted); margin:10px 0 0">
+          Filtra per <strong>ambito</strong> e cerca città e borghi.
+        </p>
+
+        <div class="filters" role="region" aria-label="Filtri">
+          <div class="field">
+            <label for="ambito">Ambito</label>
+            <select id="ambito">
+              <option value="TUTTI">Tutti gli ambiti</option>
+            </select>
+          </div>
+
+          <div class="field" style="flex:1; min-width:260px">
+            <label for="q">Cerca</label>
+            <input id="q" type="search" placeholder="Es: Calascio, borgo, città..." />
+          </div>
+        </div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card pad">
+        <h2>Luoghi</h2>
+        <p class="kicker">Risultati: <span id="count">0</span></p>
+
+        <div id="cards" class="cards" aria-live="polite"></div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="assets/js/site.js"></script>
+
+<script>
+/**
+ * Percorso città e borghi (dati dal vecchio sito):
+ * 5 ambiti, 45 schede (immagine + titolo + tipologia).
+ */
+const items = [
+  { ambito: "Chieti-Pescara", titolo: "Pescara", tipo: "Casa di G. D'Annunzio", img: "assets/img/dannunziano/Museo-Casa-dAnnunzio.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Pescara", tipo: "Palazzo del Governo", img: "assets/img/dannunziano/Figlia-di-Iorio.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Pescara", tipo: "Cattedrale di San Cetteo", img: "assets/img/dannunziano/Cattedrale.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Pescara", tipo: "Pinetina", img: "assets/img/dannunziano/pescara_la_pineta.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Francavilla", tipo: "Convento Michetti", img: "assets/img/dannunziano/conventoMichettiFrancavilla.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Ortona", tipo: "Istituto nazionale Tostiano", img: "assets/img/dannunziano/tosti.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Miglianico", tipo: "Chiesa di S. Michele Arcangelo", img: "assets/img/dannunziano/miglianico.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Castiglione a Casauria", tipo: "Abbazia di S. Clemente a Casauria", img: "assets/img/dannunziano/abbaziasanclementecastiglione.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "San Vito", tipo: "Eremo d'Annunziano", img: "assets/img/dannunziano/eremo.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Casoli", tipo: "La 'Cella Poetica'", img: "assets/img/dannunziano/casoli.jpg" }
+];
+
+const elCards = document.getElementById('cards');
+const elCount = document.getElementById('count');
+const elAmbito = document.getElementById('ambito');
+const elQ = document.getElementById('q');
+
+function norm(s){ return (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""); }
+
+function initAmbiti(){
+  const ambiti = Array.from(new Set(items.map(i => i.ambito))).sort((a,b)=>a.localeCompare(b));
+  for (const a of ambiti){
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    elAmbito.appendChild(opt);
+  }
+}
+
+function render(){
+  const ambito = elAmbito.value;
+  const q = norm(elQ.value);
+
+  const filtered = items.filter(it => {
+    const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+    const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+    const okQ = !q || hay.includes(q);
+    return okAmbito && okQ;
+  });
+
+elCards.innerHTML = filtered.map(it => {
+
+  const kind = (it.tipo || "").toLowerCase().includes("statua")
+           ? "statua"
+           : "foto";
+
+  return `
+    <article class="card carditem" data-ambito="${it.ambito}" data-kind="${kind}">
+      <div class="media">
+        <img src="${it.img}" alt="${it.titolo}">
+      </div>
+      <div class="body">
+        <h3>${it.titolo}</h3>
+<p>${it.tipo}</p>
+<div class="meta">
+  <span class="badge">${it.ambito}</span>
+</div>
+      </div>
+    </article>
+  `;
+}).join('');
+
+  elCount.textContent = filtered.length;
+}
+
+elAmbito.addEventListener('change', render);
+elQ.addEventListener('input', render);
+
+
+initAmbiti();
+render();
+</script>
+</body>
+</html>

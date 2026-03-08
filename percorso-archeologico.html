@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Percorso archeologico — Abruzzo che Viaggi</title>
+  <meta name="description" content="Percorso archeologico in Abruzzo con filtro per ambito e ricerca: L'Aquila, Avezzano–Sulmona, Teramo, Chieti–Pescara, Lanciano–Vasto." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Vai al contenuto</a>
+
+<div data-include="header"></div>
+
+<main id="main">
+<section class="hero">
+  <div class="container">
+    <div class="card pad">
+      <h1>Percorso archeologico</h1>
+      <p class="small" style="color:var(--muted); margin:10px 0 0">
+        Filtra per <strong>ambito</strong> e cerca i luoghi.
+      </p>
+
+      <div class="filters" role="region" aria-label="Filtri">
+        <div class="field">
+          <label for="ambito">Ambito</label>
+          <select id="ambito">
+            <option value="TUTTI">Tutti gli ambiti</option>
+          </select>
+        </div>
+
+        <div class="field" style="flex:1; min-width:260px">
+          <label for="q">Cerca</label>
+          <input id="q" type="search" placeholder="Es: Amiternum, museo, necropoli..." />
+        </div>
+      </div>
+
+      <hr class="sep" />
+    </div>
+  </div>
+</section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card pad">
+        <h2>Luoghi</h2>
+        <p class="kicker">Risultati: <span id="count">0</span></p>
+
+        <div id="cards" class="cards" aria-live="polite"></div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="assets/js/site.js"></script>
+
+<script>
+/**
+ * Dati convertiti dal vecchio percorso_archeologico.html:
+ * 5 ambiti, 44 schede (immagine + titolo + tipologia). :contentReference[oaicite:1]{index=1}
+ */
+const items = [
+  // Ambito: L'Aquila
+  { ambito: "L'Aquila", titolo: "Amiternum – L'Aquila", tipo: "Edificio: Teatro", img: "assets/img/archeologico/fig.1teatro-amit.JPG" },
+  { ambito: "L'Aquila", titolo: "Amiternum – L'Aquila", tipo: "Edificio: Anfiteatro", img: "assets/img/archeologico/fig.2anfi-amit.JPG" },
+  { ambito: "L'Aquila", titolo: "Amiternum – L'Aquila", tipo: "Edificio: Terme", img: "assets/img/archeologico/Amiternum_6.jpg" },
+  { ambito: "L'Aquila", titolo: "Forconium – L'Aquila", tipo: "Edificio: Terme", img: "assets/img/archeologico/forconium.jpg" },
+  { ambito: "L'Aquila", titolo: "Peltuinum – P. d'Ansidonia", tipo: "Edificio: Teatro", img: "assets/img/archeologico/peltuinum.jpg" },
+  { ambito: "L'Aquila", titolo: "Bazzano – L'Aquila", tipo: "Necropoli", img: "assets/img/archeologico/fig.2bazzano.JPG" },
+  { ambito: "L'Aquila", titolo: "Fossa", tipo: "Necropoli", img: "assets/img/archeologico/fig.1fossa.jpg" },
+  { ambito: "L'Aquila", titolo: "Museo dell'Aquila", tipo: "Scultura: Calendario amiternino", img: "assets/img/archeologico/fig_1calendario.jpg" },
+
+  // Ambito: Avezzano-Sulmona
+  { ambito: "Avezzano-Sulmona", titolo: "Alba Fucens – M. d'Albe", tipo: "Antica città", img: "assets/img/archeologico/AlbaFucensAnfiteatro.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Corfinium – Corfinio", tipo: "Antica città", img: "assets/img/archeologico/corfinium.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Ercole Curino – Sulmona", tipo: "Edificio: Santuario", img: "assets/img/archeologico/fig.3sant-curino.JPG" },
+  { ambito: "Avezzano-Sulmona", titolo: "Lucus Angitiae – L. Marsi", tipo: "Edificio: Santuario", img: "assets/img/archeologico/lucus_angitiae.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Ocriticum – Cansano", tipo: "Edificio: Tempio", img: "assets/img/archeologico/Ocriticum.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Ocriticum – Cansano", tipo: "Edificio: Calcara", img: "assets/img/archeologico/fig.1calcara.JPG" },
+  { ambito: "Avezzano-Sulmona", titolo: "Avezzano", tipo: "Edificio: Cunicoli di Claudio", img: "assets/img/archeologico/fig.1CunicoliClaudio.JPG" },
+  { ambito: "Avezzano-Sulmona", titolo: "Marruvium – S.B. dei Marsi", tipo: "Edificio: Domus e Anfiteatro", img: "assets/img/archeologico/marruvium.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Castel di Ieri", tipo: "Edificio: Templi", img: "assets/img/archeologico/castel_di_ieri.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Celano – Le paludi", tipo: "Necropoli", img: "assets/img/archeologico/celano-necropoli.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Museo di Avezzano", tipo: "Scultura: Rilievo Torlonia (Avezzano)", img: "assets/img/archeologico/fig_1torlonia.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Museo di Sulmona", tipo: "Statua: Venere (Ocriticum)", img: "assets/img/archeologico/fig.1venere.jpg" },
+
+  // Ambito: Teramo
+  { ambito: "Teramo", titolo: "Interamnia Praetutiorum", tipo: "Edificio: Teatro", img: "assets/img/archeologico/fig.3teatro-inter.JPG" },
+  { ambito: "Teramo", titolo: "Interamnia Praetutiorum", tipo: "Edificio: Anfiteatro", img: "assets/img/archeologico/fig.2anfi-inter.JPG" },
+  { ambito: "Teramo", titolo: "Teramo", tipo: "Edificio: Domus del Leone", img: "assets/img/archeologico/domus_del_leone_1.jpg" },
+  { ambito: "Teramo", titolo: "Hatria – Atri", tipo: "Edificio: Cisterna", img: "assets/img/archeologico/cisterna.gif" },
+  { ambito: "Teramo", titolo: "Campovalano – Campli", tipo: "Necropoli", img: "assets/img/archeologico/campovalano.JPG" },
+  { ambito: "Teramo", titolo: "Museo di Teramo", tipo: "Scultura: Busto di Settimio Severo", img: "assets/img/archeologico/fig.1settimio.jpg" },
+  { ambito: "Teramo", titolo: "Museo di Teramo", tipo: "Scultura: Testa di Guerriero (Cortino)", img: "assets/img/archeologico/fig.1testa.jpg" },
+  { ambito: "Teramo", titolo: "Grotta S. Angelo – Civitella del Tronto", tipo: "Sito preistorico", img: "assets/img/archeologico/grotte-santangelo-ripe.JPG" },
+
+  // Ambito: Chieti-Pescara
+  { ambito: "Chieti-Pescara", titolo: "Teate Marrucinorum – Chieti", tipo: "Antica città", img: "assets/img/archeologico/fig.1teate.JPG" },
+  { ambito: "Chieti-Pescara", titolo: "Manoppello", tipo: "Edificio: Domus romana", img: "assets/img/archeologico/manoppello.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Comino – Guardiagrele", tipo: "Necropoli", img: "assets/img/archeologico/fig.3comino.JPG" },
+  { ambito: "Chieti-Pescara", titolo: "Museo di Chieti", tipo: "Statua: Ercole a banchetto (Alba Fucens)", img: "assets/img/archeologico/fig.1banchetto.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Museo di Chieti", tipo: "Statua: Ercole Cumino (Sulmona)", img: "assets/img/archeologico/fig.1ercole.JPG" },
+  { ambito: "Chieti-Pescara", titolo: "Museo di Chieti", tipo: "Statua: Guerriero di Capestrano (Capestrano)", img: "assets/img/archeologico/fig.1guerriero.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Museo di Chieti", tipo: "Monumento funerario di Lusius Storax", img: "assets/img/archeologico/fig.1lusiius.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Grotta dei Piccioni – Bolognano", tipo: "Sito preistorico", img: "assets/img/archeologico/Grotta-dei-Piccioni-Bolognano.jpg" },
+
+  // Ambito: Lanciano-Vasto
+  { ambito: "Lanciano-Vasto", titolo: "Histonium – Vasto", tipo: "Antica città", img: "assets/img/archeologico/fig_1Histonium.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Juvanum – Montenerodomo", tipo: "Antica città", img: "assets/img/archeologico/fig.1Juvanum.JPG" },
+  { ambito: "Lanciano-Vasto", titolo: "Pallanum – Tornareccio", tipo: "Antico insediamento", img: "assets/img/archeologico/Mura-Megalitiche_tornareccio.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Schiavi d'Abruzzo", tipo: "Edificio: Templi", img: "assets/img/archeologico/fig.1schiavi.JPG" },
+  { ambito: "Lanciano-Vasto", titolo: "Trebula – Quadri", tipo: "Edificio: Tempio", img: "assets/img/archeologico/quadri-trebula.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Cupello", tipo: "Edificio: Domus romana", img: "assets/img/archeologico/Cupello.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "San Salvo", tipo: "Parco archeologico del Quadrilatero", img: "assets/img/archeologico/san_salvo.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Anxanum – Lanciano", tipo: "Percorso archeologico", img: "assets/img/archeologico/lanciano_percorso_archeo.jpg" },
+];
+
+const elCards = document.getElementById('cards');
+const elCount = document.getElementById('count');
+const elAmbito = document.getElementById('ambito');
+const elQ = document.getElementById('q');
+
+function norm(s){ return (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""); }
+
+function initAmbiti(){
+  const ambiti = Array.from(new Set(items.map(i => i.ambito))).sort((a,b)=>a.localeCompare(b));
+  for (const a of ambiti){
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    elAmbito.appendChild(opt);
+  }
+}
+
+function render(){
+  const ambito = elAmbito.value;
+  const q = norm(elQ.value);
+
+  const filtered = items.filter(it => {
+    const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+    const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+    const okQ = !q || hay.includes(q);
+    return okAmbito && okQ;
+  });
+
+elCards.innerHTML = filtered.map(it => {
+
+  const kind = (it.tipo || "").toLowerCase().includes("statua")
+           ? "statua"
+           : "foto";
+
+  return `
+    <article class="card carditem" data-ambito="${it.ambito}" data-kind="${kind}">
+      <div class="media">
+        <img src="${it.img}" alt="${it.titolo}">
+      </div>
+      <div class="body">
+        <h3>${it.titolo}</h3>
+<p>${it.tipo}</p>
+<div class="meta">
+  <span class="badge">${it.ambito}</span>
+</div>
+      </div>
+    </article>
+  `;
+}).join('');
+
+  elCount.textContent = filtered.length;
+}
+
+elAmbito.addEventListener('change', render);
+elQ.addEventListener('input', render);
+
+
+initAmbiti();
+render();
+</script>
+</body>
+</html>

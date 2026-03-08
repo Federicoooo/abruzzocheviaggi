@@ -1,0 +1,430 @@
+{
+  "meta": {
+    "title": "Abruzzo che Viaggi — collegamenti diretti dagli aeroporti di arrivo",
+    "methodology": "Include solo mete raggiungibili senza cambi (treno/bus/tram/metro diretti) dagli aeroporti di arrivo delle rotte da Pescara (PSR). Tempi indicativi; verifica sempre su fonti ufficiali.",
+    "from_airport": {
+      "name": "Aeroporto d’Abruzzo (Pescara)",
+      "iata": "PSR"
+    },
+    "version": "1.0"
+  },
+  "airports": {
+    "HHN": {
+      "name": "Frankfurt-Hahn Airport",
+      "transport_url": "https://www.hahn-airport.de/en/passengers-visitiors/getting-there/by-bus",
+      "direct": [
+        {
+          "city": "Francoforte",
+          "mode": "bus",
+          "time": "≈ 2h"
+        },
+        {
+          "city": "Koblenz",
+          "mode": "bus",
+          "time": "≈ 1h30"
+        },
+        {
+          "city": "Mainz",
+          "mode": "bus",
+          "time": "≈ 1h45"
+        },
+        {
+          "city": "Trier",
+          "mode": "bus",
+          "time": "≈ 1h30"
+        },
+        {
+          "city": "Lussemburgo",
+          "mode": "bus",
+          "time": "≈ 2h"
+        }
+      ]
+    },
+    "CRL": {
+      "name": "Brussels South Charleroi Airport",
+      "transport_url": "https://www.brussels-charleroi-airport.com/en/mobility",
+      "direct": [
+        {
+          "city": "Bruxelles",
+          "mode": "bus",
+          "time": "≈ 1h"
+        },
+        {
+          "city": "Charleroi",
+          "mode": "bus",
+          "time": "≈ 20 min"
+        },
+        {
+          "city": "Bruges",
+          "mode": "bus",
+          "time": "≈ 1h30"
+        },
+        {
+          "city": "Gand",
+          "mode": "bus",
+          "time": "≈ 1h"
+        },
+        {
+          "city": "Lille",
+          "mode": "bus",
+          "time": "≈ 1h30"
+        },
+        {
+          "city": "Mons",
+          "mode": "bus",
+          "time": "≈ 1h"
+        },
+        {
+          "city": "Anversa",
+          "mode": "bus",
+          "time": "≈ 1h40"
+        }
+      ]
+    },
+    "GRO": {
+      "name": "Girona–Costa Brava Airport",
+      "transport_url": "https://www.sagalesairportline.com/en/timetables-and-lines/girona",
+      "direct": [
+        {
+          "city": "Barcellona",
+          "mode": "bus",
+          "time": "≈ 1h15"
+        },
+        {
+          "city": "Girona",
+          "mode": "bus",
+          "time": "≈ 25 min"
+        },
+        {
+          "city": "Figueres",
+          "mode": "bus",
+          "time": "≈ 1h"
+        },
+        {
+          "city": "Lloret de Mar",
+          "mode": "bus",
+          "time": "≈ 45 min"
+        },
+        {
+          "city": "Blanes",
+          "mode": "bus",
+          "time": "≈ 40 min"
+        }
+      ]
+    },
+    "NRN": {
+      "name": "Airport Weeze (Düsseldorf Weeze)",
+      "transport_url": "https://airport-weeze.com/en/how-to-get-to-the-airport/bus/",
+      "direct": [
+        {
+          "city": "Düsseldorf",
+          "mode": "bus",
+          "time": "≈ 1h30"
+        },
+        {
+          "city": "Nijmegen",
+          "mode": "bus",
+          "time": "≈ 1h"
+        },
+        {
+          "city": "Weeze",
+          "mode": "bus",
+          "time": "≈ 10 min"
+        }
+      ]
+    },
+    "FMM": {
+      "name": "Memmingen Allgäu Airport",
+      "transport_url": "https://www.memmingen-airport.com/arrival-departure/bus-train/",
+      "direct": [
+        {
+          "city": "Monaco di Baviera",
+          "mode": "bus",
+          "time": "≈ 1h20"
+        },
+        {
+          "city": "Memmingen",
+          "mode": "bus",
+          "time": "≈ 10 min"
+        },
+        {
+          "city": "Ulm",
+          "mode": "bus",
+          "time": "≈ 1h"
+        }
+      ]
+    },
+    "STN": {
+      "name": "London Stansted Airport",
+      "transport_url": "https://www.stanstedairport.com/getting-to-and-from/by-train/",
+      "direct": [
+        {
+          "city": "Londra",
+          "mode": "treno",
+          "time": "≈ 48 min"
+        },
+        {
+          "city": "Cambridge",
+          "mode": "treno",
+          "time": "≈ 30 min"
+        }
+      ]
+    },
+    "MLA": {
+      "name": "Malta International Airport",
+      "transport_url": "https://maltairport.com/transport/bus-service/",
+      "direct": [
+        {
+          "city": "La Valletta",
+          "mode": "bus",
+          "time": "≈ 30 min"
+        },
+        {
+          "city": "Sliema",
+          "mode": "bus",
+          "time": "≈ 35 min"
+        },
+        {
+          "city": "St. Julian’s",
+          "mode": "bus",
+          "time": "≈ 40 min"
+        },
+        {
+          "city": "St. Paul’s Bay",
+          "mode": "bus",
+          "time": "≈ 1h"
+        },
+        {
+          "city": "Mellieħa",
+          "mode": "bus",
+          "time": "≈ 1h15"
+        }
+      ]
+    },
+    "VLC": {
+      "name": "Valencia Airport",
+      "transport_url": "https://www.aena.es/en/valencia/como-llegar/underground.html",
+      "direct": [
+        {
+          "city": "Valencia",
+          "mode": "metro",
+          "time": "≈ 25 min"
+        }
+      ]
+    },
+    "PRG": {
+      "name": "Václav Havel Airport Prague",
+      "transport_url": "https://www.prg.aero/en/airport-express",
+      "direct": [
+        {
+          "city": "Praga",
+          "mode": "bus",
+          "time": "≈ 40 min"
+        }
+      ]
+    },
+    "KRK": {
+      "name": "Kraków Airport",
+      "transport_url": "https://www.krakowairport.pl/en/train-en",
+      "direct": [
+        {
+          "city": "Cracovia",
+          "mode": "treno",
+          "time": "≈ 20 min"
+        },
+        {
+          "city": "Wieliczka",
+          "mode": "treno",
+          "time": "≈ 35–45 min"
+        }
+      ]
+    },
+    "WRO": {
+      "name": "Wrocław Airport",
+      "transport_url": "https://airport.wroclaw.pl/en/passenger/arrival/how-to-get-to-the-city/",
+      "direct": [
+        {
+          "city": "Wrocław",
+          "mode": "bus",
+          "time": "≈ 35–45 min"
+        }
+      ]
+    },
+    "OTP": {
+      "name": "Bucharest Henri Coandă Airport",
+      "transport_url": "https://www.bucharestairports.ro/en/train",
+      "direct": [
+        {
+          "city": "Bucarest",
+          "mode": "treno",
+          "time": "≈ 20–25 min"
+        }
+      ]
+    },
+    "KUN": {
+      "name": "Kaunas Airport",
+      "transport_url": "https://www.kaunas-airport.lt/en/before-the-flight/transport/public-transport",
+      "direct": [
+        {
+          "city": "Kaunas",
+          "mode": "bus",
+          "time": "≈ 35 min"
+        },
+        {
+          "city": "Vilnius",
+          "mode": "bus",
+          "time": "≈ 1h30"
+        }
+      ]
+    },
+    "LUX": {
+      "name": "Luxembourg Airport",
+      "transport_url": "https://www.lux-airport.lu/parking-transport/bus/",
+      "direct": [
+        {
+          "city": "Lussemburgo",
+          "mode": "tram/bus",
+          "time": "≈ 20–25 min"
+        }
+      ]
+    },
+    "AHO": {
+      "name": "Aeroporto di Alghero (Fertilia)",
+      "transport_url": "https://www.aeroportodialghero.it/autobus.html",
+      "direct": [
+        {
+          "city": "Alghero",
+          "mode": "bus",
+          "time": "≈ 25 min"
+        },
+        {
+          "city": "Sassari",
+          "mode": "bus",
+          "time": "≈ 40 min"
+        }
+      ]
+    },
+    "CAG": {
+      "name": "Cagliari Elmas Airport",
+      "transport_url": "https://www.trenitalia.com/en/services/cagliari-elmas-airport.html",
+      "direct": [
+        {
+          "city": "Cagliari",
+          "mode": "treno",
+          "time": "≈ 6–8 min"
+        },
+        {
+          "city": "Oristano",
+          "mode": "treno",
+          "time": "≈ 1h15"
+        },
+        {
+          "city": "Iglesias",
+          "mode": "treno",
+          "time": "≈ 1h"
+        },
+        {
+          "city": "Carbonia",
+          "mode": "treno",
+          "time": "≈ 1h15"
+        }
+      ]
+    },
+    "CTA": {
+      "name": "Aeroporto di Catania Fontanarossa",
+      "transport_url": "https://www.aeroporto.catania.it/raggiungere-l-aeroporto/in-treno",
+      "direct": [
+        {
+          "city": "Catania",
+          "mode": "bus",
+          "time": "≈ 20–25 min"
+        },
+        {
+          "city": "Taormina",
+          "mode": "treno",
+          "time": "≈ 1h"
+        },
+        {
+          "city": "Siracusa",
+          "mode": "treno",
+          "time": "≈ 1h15"
+        },
+        {
+          "city": "Messina",
+          "mode": "treno",
+          "time": "≈ 2h"
+        }
+      ]
+    },
+    "TRN": {
+      "name": "Torino-Caselle Airport",
+      "transport_url": "https://www.trenitalia.com/en/services/torino-caselle-airport.html",
+      "direct": [
+        {
+          "city": "Torino",
+          "mode": "treno",
+          "time": "≈ 25–30 min"
+        },
+        {
+          "city": "Ciriè",
+          "mode": "treno",
+          "time": "≈ 10–15 min"
+        }
+      ]
+    },
+    "TPS": {
+      "name": "Aeroporto di Trapani Birgi",
+      "transport_url": "https://www.airgest.it/bus-e-navette-di-linea/",
+      "direct": [
+        {
+          "city": "Trapani",
+          "mode": "bus",
+          "time": "≈ 30 min"
+        },
+        {
+          "city": "Marsala",
+          "mode": "bus",
+          "time": "≈ 30 min"
+        },
+        {
+          "city": "Palermo",
+          "mode": "bus",
+          "time": "≈ 1h40"
+        }
+      ]
+    },
+"TIA": {
+      "name": "Tirana International Airport",
+      "transport_url": "https://www.tirana-airport.com/en/transport-and-directions/15/By-Bus",
+      "direct": [
+        { "city": "Tirana", "mode": "bus", "time": "≈ 30 min" },
+        { "city": "Durrës", "mode": "bus", "time": "" },
+        { "city": "Fier", "mode": "bus", "time": "" },
+        { "city": "Vlorë", "mode": "bus", "time": "" }
+      ]
+    },
+
+    "BGY": {
+      "name": "Milan Bergamo Airport",
+      "transport_url": "https://www.milanbergamoairport.it/it/autobus/",
+      "direct": [
+        { "city": "Bergamo", "mode": "bus", "time": "" },
+        { "city": "Milano C.le", "mode": "bus", "time": "" },
+        { "city": "Brescia", "mode": "bus", "time": "" },
+        { "city": "Verona", "mode": "bus", "time": "" }
+      ]
+    },
+
+    "MXP": {
+      "name": "Milano Malpensa Airport",
+      "transport_url": "https://www.milanomalpensa-airport.com/it/da-per/in-bus",
+      "direct": [
+        { "city": "Milano C.le", "mode": "bus", "time": "" },
+                    { "city": "Torino", "mode": "bus", "time": "" },
+        { "city": "Milano Cadorna", "mode": "treno", "time": "≈ 40 min" },
+        { "city": "Novara", "mode": "bus", "time": "" }
+      ]
+    }
+
+  }
+}

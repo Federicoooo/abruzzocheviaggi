@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Percorso città e borghi — Abruzzo che Viaggi</title>
+  <meta name="description" content="Percorso città e borghi in Abruzzo con filtro per ambito e ricerca: L'Aquila, Avezzano-Sulmona, Teramo, Chieti-Pescara, Lanciano-Vasto." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Vai al contenuto</a>
+
+<div data-include="header"></div>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <div class="card pad">
+        <h1>Percorso città e borghi</h1>
+        <p class="small" style="color:var(--muted); margin:10px 0 0">
+          Filtra per <strong>ambito</strong> e cerca città e borghi.
+        </p>
+
+        <div class="filters" role="region" aria-label="Filtri">
+          <div class="field">
+            <label for="ambito">Ambito</label>
+            <select id="ambito">
+              <option value="TUTTI">Tutti gli ambiti</option>
+            </select>
+          </div>
+
+          <div class="field" style="flex:1; min-width:260px">
+            <label for="q">Cerca</label>
+            <input id="q" type="search" placeholder="Es: Calascio, borgo, città..." />
+          </div>
+        </div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card pad">
+        <h2>Luoghi</h2>
+        <p class="kicker">Risultati: <span id="count">0</span></p>
+
+        <div id="cards" class="cards" aria-live="polite"></div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="assets/js/site.js"></script>
+
+<script>
+/**
+ * Percorso città e borghi (dati dal vecchio sito):
+ * 5 ambiti, 45 schede (immagine + titolo + tipologia).
+ */
+const items = [
+  // Ambito: L'Aquila
+  { ambito: "L'Aquila", titolo: "L'Aquila", tipo: "Città d'arte", img: "assets/img/citta-borghi/laquila.jpg" },
+  { ambito: "L'Aquila", titolo: "Calascio", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/calascio.jpg" },
+  { ambito: "L'Aquila", titolo: "Capestrano", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/Capestrano.jpg" },
+  { ambito: "L'Aquila", titolo: "Castel del Monte", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/castel_del_monte.jpg" },
+  { ambito: "L'Aquila", titolo: "Navelli", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/navelli.jpg" },
+  { ambito: "L'Aquila", titolo: "Opi", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/opi.jpg" },
+  { ambito: "L'Aquila", titolo: "Santo Stefano di Sessanio", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/santostefano.jpg" },
+  // Ambito: Avezzano-Sulmona
+  { ambito: "Avezzano-Sulmona", titolo: "Sulmona", tipo: "Città d'arte", img: "assets/img/citta-borghi/sulmona.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Anversa degli Abruzzi", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/anversa.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Bugnara", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/bugnara.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Castel di Sangro", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/castel-di-sangro.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Corfinio", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/Corfinio.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Introdacqua", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/introdacqua.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pacentro", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/Pacentro.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pescasseroli", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/pescasseroli.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pescocostanzo", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/pescocostanzo.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Pettorano sul Gizio", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/Pettorano_sul_Gizio.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Rivisondoli", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/RIVISONDOLI.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Scanno", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/scanno.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Tagliacozzo", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/tagliacozzo.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Villalago", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/villalago.jpeg" },
+  // Ambito: Teramo
+  { ambito: "Teramo", titolo: "Teramo", tipo: "Città d'arte", img: "assets/img/citta-borghi/teramo.jpg" },
+  { ambito: "Teramo", titolo: "Giulianova", tipo: "Città d'arte", img: "assets/img/citta-borghi/giulianova.jpg" },
+  { ambito: "Teramo", titolo: "Atri", tipo: "Città d'arte", img: "assets/img/citta-borghi/atri.jpg" },
+  { ambito: "Teramo", titolo: "Bisenti", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/bisenti.jpg" },
+  { ambito: "Teramo", titolo: "Campli", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/campli.jpg" },
+  { ambito: "Teramo", titolo: "Castelli", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/castelli.jpg" },
+  { ambito: "Teramo", titolo: "Civitella del Tronto", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/civitella.jpg" },
+  { ambito: "Teramo", titolo: "Pietracamela", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/pietracamela.jpg" },
+  // Ambito: Chieti-Pescara
+  { ambito: "Chieti-Pescara", titolo: "Chieti", tipo: "Città d'arte", img: "assets/img/citta-borghi/chieti.gif" },
+  { ambito: "Chieti-Pescara", titolo: "Ortona", tipo: "Città d'arte", img: "assets/img/citta-borghi/fig.1-ortona.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Penne", tipo: "Città d'arte", img: "assets/img/citta-borghi/penne.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Abbateggio", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/Abbateggio.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Città Sant'Angelo", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/citta.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Guardiagrele", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/Guardiagrele.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Loreto Aprutino", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/LoretoAprutino.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Popoli", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/popoli.jpg" },
+  // Ambito: Lanciano-Vasto
+  { ambito: "Lanciano-Vasto", titolo: "Lanciano", tipo: "Città d'arte", img: "assets/img/citta-borghi/Lanciano.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Vasto", tipo: "Città d'arte", img: "assets/img/citta-borghi/vasto.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Atessa", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/atessa.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Fara San Martino", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/fara.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Gessopalena", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/gessopalena.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Monteodorisio", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/monteodorisio1.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Rocca San Giovanni", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/rocca-san-giovanni.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Roccascalegna", tipo: "Borgo d'arte", img: "assets/img/citta-borghi/roccascalegna.jpg" },
+];
+
+const elCards = document.getElementById('cards');
+const elCount = document.getElementById('count');
+const elAmbito = document.getElementById('ambito');
+const elQ = document.getElementById('q');
+
+function norm(s){ return (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""); }
+
+function initAmbiti(){
+  const ambiti = Array.from(new Set(items.map(i => i.ambito))).sort((a,b)=>a.localeCompare(b));
+  for (const a of ambiti){
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    elAmbito.appendChild(opt);
+  }
+}
+
+function render(){
+  const ambito = elAmbito.value;
+  const q = norm(elQ.value);
+
+  const filtered = items.filter(it => {
+    const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+    const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+    const okQ = !q || hay.includes(q);
+    return okAmbito && okQ;
+  });
+
+elCards.innerHTML = filtered.map(it => {
+
+  const kind = (it.tipo || "").toLowerCase().includes("statua")
+           ? "statua"
+           : "foto";
+
+  return `
+    <article class="card carditem" data-ambito="${it.ambito}" data-kind="${kind}">
+      <div class="media">
+        <img src="${it.img}" alt="${it.titolo}">
+      </div>
+      <div class="body">
+        <h3>${it.titolo}</h3>
+<p>${it.tipo}</p>
+<div class="meta">
+  <span class="badge">${it.ambito}</span>
+</div>
+      </div>
+    </article>
+  `;
+}).join('');
+
+  elCount.textContent = filtered.length;
+}
+
+elAmbito.addEventListener('change', render);
+elQ.addEventListener('input', render);
+
+
+initAmbiti();
+render();
+</script>
+</body>
+</html>

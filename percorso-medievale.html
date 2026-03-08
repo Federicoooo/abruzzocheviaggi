@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Percorso medievale — Abruzzo che Viaggi</title>
+  <meta name="description" content="Percorso città e borghi in Abruzzo con filtro per ambito e ricerca: L'Aquila, Avezzano-Sulmona, Teramo, Chieti-Pescara, Lanciano-Vasto." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Vai al contenuto</a>
+
+<div data-include="header"></div>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <div class="card pad">
+        <h1>Percorso medievale</h1>
+        <p class="small" style="color:var(--muted); margin:10px 0 0">
+          Filtra per <strong>ambito</strong> e cerca città e borghi.
+        </p>
+
+        <div class="filters" role="region" aria-label="Filtri">
+          <div class="field">
+            <label for="ambito">Ambito</label>
+            <select id="ambito">
+              <option value="TUTTI">Tutti gli ambiti</option>
+            </select>
+          </div>
+
+          <div class="field" style="flex:1; min-width:260px">
+            <label for="q">Cerca</label>
+            <input id="q" type="search" placeholder="Es: Calascio, borgo, città..." />
+          </div>
+        </div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card pad">
+        <h2>Luoghi</h2>
+        <p class="kicker">Risultati: <span id="count">0</span></p>
+
+        <div id="cards" class="cards" aria-live="polite"></div>
+
+        <hr class="sep" />
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="assets/js/site.js"></script>
+
+<script>
+/**
+ * Percorso città e borghi (dati dal vecchio sito):
+ * 5 ambiti, 45 schede (immagine + titolo + tipologia).
+ */
+const items = [
+  { ambito: "L'Aquila", titolo: "L'Aquila", tipo: "S. Maria di Collemaggio", img: "assets/img/medievale/1_Collemaggio_LAquila.JPG" },
+  { ambito: "L'Aquila", titolo: "L'Aquila", tipo: "S. Silvestro", img: "assets/img/medievale/8_Silvestro_Laquila.JPG" },
+  { ambito: "L'Aquila", titolo: "Bazzano - L'Aquila", tipo: "S. Giusta", img: "assets/img/medievale/2_GiustaBazzano.JPG" },
+  { ambito: "L'Aquila", titolo: "Paganica - L'Aquila", tipo: "S. Giustino", img: "assets/img/medievale/6_Giustino_Paganica.JPG" },
+  { ambito: "L'Aquila", titolo: "San Vittorino - L'Aquila", tipo: "S. Michele Arcangelo", img: "assets/img/medievale/1_MicheleArcangeloVittorino.JPG" },
+  { ambito: "L'Aquila", titolo: "Fossa", tipo: "S. Maria ad Cryptas", img: "assets/img/medievale/2_MariaFossa.JPG" },
+  { ambito: "L'Aquila", titolo: "Bominaco - Caporciano", tipo: "S. Maria Assunta", img: "assets/img/medievale/caporciano.gif" },
+  { ambito: "L'Aquila", titolo: "Bominaco - Caporciano", tipo: "S. Pellegrino", img: "assets/img/medievale/san_pellegrino1.jpg" },
+  { ambito: "L'Aquila", titolo: "Prata D'Ansidonia", tipo: "S. Paolo di Peltuino", img: "assets/img/medievale/1_PaoloPeltuino_Prata.JPG" },
+  { ambito: "L'Aquila", titolo: "Capestrano", tipo: "S. Pietro ad Oratorium", img: "assets/img/medievale/san_pietro_oratorium.jpg" },
+  { ambito: "L'Aquila", titolo: "Assergi - L'Aquila", tipo: "S. Maria Assunta", img: "assets/img/medievale/assergi_maria_assunta.jpg" },
+  { ambito: "L'Aquila", titolo: "L'Aquila", tipo: "S. Pietro di Coppito", img: "assets/img/medievale/L_aquila-pietro_coppito.jpg" },
+  { ambito: "L'Aquila", titolo: "Tione degli Abruzzi", tipo: "S. Maria del Ponte", img: "assets/img/medievale/tione-maria_del_ponte2.jpg" },
+  { ambito: "L'Aquila", titolo: "San Benedetto in Perillis", tipo: "S. Benedetto", img: "assets/img/medievale/perillis_benedetto.jpg" },
+  { ambito: "L'Aquila", titolo: "Ocre", tipo: "S. Spirito", img: "assets/img/medievale/ocre-santo_spirito.jpg" },
+  { ambito: "L'Aquila", titolo: "Barisciano", tipo: "Chiesa del Buon Consiglio", img: "assets/img/medievale/barisciano.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Sulmona", tipo: "S. Maria della Tomba", img: "assets/img/medievale/1_tombaSulmona.JPG" },
+  { ambito: "Avezzano-Sulmona", titolo: "Carsoli", tipo: "S. Maria in Cellis", img: "assets/img/medievale/carsoli.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Rosciolo - Luco dei Marsi", tipo: "S. Maria in Val Porclaneta", img: "assets/img/medievale/santamaria2.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Corfinio", tipo: "S. Pelino", img: "assets/img/medievale/3_PelinoCorfinio.JPG" },
+  { ambito: "Avezzano-Sulmona", titolo: "Albe - Massa d'Albe", tipo: "S. Pietro", img: "assets/img/medievale/Chiesa_di_San_Pietro_Albe.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Roccapia", tipo: "S. Maria del Carmine", img: "assets/img/medievale/1_MadonnaCasale_Roccapia.JPG" },
+  { ambito: "Avezzano-Sulmona", titolo: "Celano", tipo: "S. Giovanni Battista", img: "assets/img/medievale/celano3.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Luco dei Marsi", tipo: "S. Maria delle Grazie", img: "assets/img/medievale/luco-maria_delle_grazie.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Tagliacozzo", tipo: "S. Francesco", img: "assets/img/medievale/tagliacozzo_san_francesco.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Magliano dei Marsi", tipo: "S. Lucia", img: "assets/img/medievale/magliano-lucia.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Trasacco", tipo: "S. Cesidio", img: "assets/img/medievale/trasacco_cesidio.jpg" },
+  { ambito: "Avezzano-Sulmona", titolo: "Scurcola Marsicana", tipo: "S. Maria della Vittoria (ruderi)", img: "assets/img/medievale/scurcola.jpg" },
+  { ambito: "Teramo", titolo: "Teramo", tipo: "S. Berardo", img: "assets/img/medievale/5_Berardo_Teramo.JPG" },
+  { ambito: "Teramo", titolo: "Guardia al V.-Notaresco", tipo: "S. Clemente al Vomano", img: "assets/img/medievale/san_clemente_vomano.jpg" },
+  { ambito: "Teramo", titolo: "Campli", tipo: "S. Francesco", img: "assets/img/medievale/campli.jpg" },
+  { ambito: "Teramo", titolo: "Isola del Gran Sasso", tipo: "S. Giovanni ad Insulam", img: "assets/img/medievale/1_GiovanniIsola.JPG" },
+  { ambito: "Teramo", titolo: "Atri", tipo: "S. Maria Assunta", img: "assets/img/medievale/assunta_atri.jpg" },
+  { ambito: "Teramo", titolo: "Morro D'Oro", tipo: "S. Maria di Propezzano", img: "assets/img/medievale/Chiesa_di_Santa_Maria_di_Propezzano.jpg" },
+  { ambito: "Teramo", titolo: "Ronzano - Castel Castagna", tipo: "S. Maria di Ronzano", img: "assets/img/medievale/ronzano.jpg" },
+  { ambito: "Teramo", titolo: "Giulianova", tipo: "S. Maria a Mare", img: "assets/img/medievale/giulianova-maria_a_mare.jpg" },
+  { ambito: "Teramo", titolo: "Campovalano - Campli", tipo: "S. Pietro", img: "assets/img/medievale/campli-pietro.jpg" },
+  { ambito: "Teramo", titolo: "S. Omero", tipo: "S. Maria a Vico", img: "assets/img/medievale/santomero_vico.jpg" },
+  { ambito: "Teramo", titolo: "Teramo", tipo: "S. Domenico", img: "assets/img/medievale/teramo-domenico.jpg" },
+  { ambito: "Teramo", titolo: "Teramo", tipo: "S. Anna dei Pompetti", img: "assets/img/medievale/Teramo-Sant_Anna_dei_Pompetti.jpg" },
+  { ambito: "Teramo", titolo: "Canzano", tipo: "S. Salvatore", img: "assets/img/medievale/canzano-salvatore.jpg" },
+  { ambito: "Teramo", titolo: "S. Vito - Valle Castellana", tipo: "S. Vito", img: "assets/img/medievale/valle_castellana-vito.jpg" },
+  { ambito: "Teramo", titolo: "Civitella del Tronto", tipo: "S. Maria Assunata", img: "assets/img/medievale/civitella_maria_monte_santo2.jpg" },
+  { ambito: "Teramo", titolo: "Sant'Egidio alla Vibrata", tipo: "Sant'Egidio", img: "assets/img/medievale/santegidio.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Castiglione a Casauria", tipo: "S. Clemente a Casauria", img: "assets/img/medievale/clemente.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Serramonacesca", tipo: "S. Liberatore", img: "assets/img/medievale/san-liberatore.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Moscufo", tipo: "S. Maria al Lago", img: "assets/img/medievale/santa_maria_del_lago.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Manoppello", tipo: "S. Maria Arabona", img: "assets/img/medievale/Abbazia_di_Santa_Maria_Arabona.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Loreto Aprutino", tipo: "S. Maria in Piano", img: "assets/img/medievale/loreto.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Pianella", tipo: "S. Maria Maggiore", img: "assets/img/medievale/pianella.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Caramanico", tipo: "S. Tommaso", img: "assets/img/medievale/san-tommaso.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Carpineto della Nora", tipo: "S. Bartolomeo", img: "assets/img/medievale/carpineto-bartolomeo.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Civitaquana", tipo: "S. Maria delle Grazie", img: "assets/img/medievale/civitaquana-maria_grazie.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Penne", tipo: "S. Massimo - Cripta", img: "assets/img/medievale/penne-massimo.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Pescosansonesco", tipo: "S. Nicola", img: "assets/img/medievale/pescosansonesco-nicola.jpg" },
+  { ambito: "Chieti-Pescara", titolo: "Turrivalignani", tipo: "S. Giovanni e Vincenzo", img: "assets/img/medievale/turrivalignani-giovanni_vincenzo.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Fossacesia", tipo: "S. Giovanni in Venere", img: "assets/img/medievale/fossacesia.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Lanciano", tipo: "S. Maria Maggiore", img: "assets/img/medievale/Santa_Maria_Maggiore_Lanciano.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Lanciano", tipo: "S. Biagio", img: "assets/img/medievale/lanciano-san_biagio.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Lanciano", tipo: "S. Spirito", img: "assets/img/medievale/lanciano_santo_spirito.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Rocca San Giovanni", tipo: "S. Matteo Apostolo", img: "assets/img/medievale/rocca_san_giovanni.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Fraine", tipo: "S. Maria Mater Domini", img: "assets/img/medievale/mater_domini.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Palena", tipo: "S. Maria di Monteplanizio", img: "assets/img/medievale/palena_-s_maria_di_monteplanizio.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Roccascalegna", tipo: "S. Pancrazio", img: "assets/img/medievale/roccascalegna-san_pancrazio.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Santa Maria Imbaro", tipo: "S. Maria Imbaro", img: "assets/img/medievale/santa_maria_imbaro.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Fara San Martino", tipo: "S. Martino in Valle (ruderi)", img: "assets/img/medievale/farasmartino.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Palombaro", tipo: "Sant'Angelo (ruderi)", img: "assets/img/medievale/santangelo.jpg" },
+  { ambito: "Lanciano-Vasto", titolo: "Gessopalena", tipo: "Antico Paese (ruderi)", img: "assets/img/medievale/gessopalena_ruderi.jpg" }
+];
+
+const elCards = document.getElementById('cards');
+const elCount = document.getElementById('count');
+const elAmbito = document.getElementById('ambito');
+const elQ = document.getElementById('q');
+
+function norm(s){ return (s || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""); }
+
+function initAmbiti(){
+  const ambiti = Array.from(new Set(items.map(i => i.ambito))).sort((a,b)=>a.localeCompare(b));
+  for (const a of ambiti){
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    elAmbito.appendChild(opt);
+  }
+}
+
+function render(){
+  const ambito = elAmbito.value;
+  const q = norm(elQ.value);
+
+  const filtered = items.filter(it => {
+    const okAmbito = (ambito === "TUTTI") || (it.ambito === ambito);
+    const hay = norm(it.titolo + " " + it.tipo + " " + it.ambito);
+    const okQ = !q || hay.includes(q);
+    return okAmbito && okQ;
+  });
+
+elCards.innerHTML = filtered.map(it => {
+
+  const kind = (it.tipo || "").toLowerCase().includes("statua")
+           ? "statua"
+           : "foto";
+
+  return `
+    <article class="card carditem" data-ambito="${it.ambito}" data-kind="${kind}">
+      <div class="media">
+        <img src="${it.img}" alt="${it.titolo}">
+      </div>
+      <div class="body">
+        <h3>${it.titolo}</h3>
+<p>${it.tipo}</p>
+<div class="meta">
+  <span class="badge">${it.ambito}</span>
+</div>
+      </div>
+    </article>
+  `;
+}).join('');
+
+  elCount.textContent = filtered.length;
+}
+
+elAmbito.addEventListener('change', render);
+elQ.addEventListener('input', render);
+
+
+initAmbiti();
+render();
+</script>
+</body>
+</html>
