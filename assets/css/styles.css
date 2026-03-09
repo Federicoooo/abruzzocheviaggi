@@ -829,3 +829,8 @@ select option:checked{
   white-space:normal;
   word-break:break-word;
 }
+
+.esempi-grid a{
+  text-decoration:none;
+  color:inherit;
+}

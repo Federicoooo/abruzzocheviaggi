@@ -20,81 +20,128 @@
         <!-- BOX AI (protagonista) -->
         <div class="card pad">
           <h1>Crea il tuo itinerario in Abruzzo</h1>
-         <p class="small">
-  Usa un assistente AI per creare un itinerario di viaggio personalizzato
-partendo esclusivamente dai contenuti di questo sito.
-</p>
-<p class="note">
-  ✨ Combina mare, borghi, montagna, cultura ed eventi in un unico itinerario
-  utilizzando esclusivamente luoghi presenti su Abruzzocheviaggi.
-</p>
-<p class="small ai-tool-note">
-  🤖 Questo strumento non genera itinerari automaticamente,
-  ma ti permette di usare un assistente AI esterno
-  <strong>guidandolo con i contenuti verificati del sito</strong>.
-</p>
+          <p class="small">
+            Usa un assistente AI per creare un itinerario di viaggio personalizzato
+            partendo esclusivamente dai contenuti di questo sito.
+          </p>
+          <p class="note">
+            ✨ Combina mare, borghi, montagna, cultura ed eventi in un unico itinerario
+            utilizzando esclusivamente luoghi presenti su Abruzzocheviaggi.
+          </p>
+          <p class="small ai-tool-note">
+            🤖 Questo strumento non genera itinerari automaticamente,
+            ma ti permette di usare un assistente AI esterno
+            <strong>guidandolo con i contenuti verificati del sito</strong>.
+          </p>
+
           <div class="card pad" style="margin-top:14px">
             <h2 style="margin-top:0">Come funziona (tempo necessario: meno di 2 minuti)</h2>
             <ol class="small" style="margin:10px 0 0 18px; color:var(--muted)">
-<li>📋 Copia i link del sito e la richiesta per l'AI</li>
-<li>🤖 Incollali in una chat AI (es. ChatGPT)</li>
-<li>🧭 Aggiungi le tue preferenze di viaggio</li>
-<li>✅ Invia la richiesta e ricorda: l’AI fornisce suggerimenti – verifica sempre date, orari e accessi sui canali ufficiali.</li>
+              <li>📋 Copia prima la richiesta per l'AI, poi i link del sito e infine le tue preferenze</li>
+              <li>🤖 Incolla tutto in una chat AI (es. ChatGPT) in un unico messaggio</li>
+              <li>🧭 Personalizza durata, zona, interessi e modalità di spostamento</li>
+              <li>✅ Invia la richiesta e ricorda: l’AI fornisce suggerimenti – verifica sempre date, orari e accessi sui canali ufficiali.</li>
             </ol>
 
             <hr class="sep" />
 
-            <h3 style="margin:0 0 10px">1) Link del sito</h3>
+            <h3 style="margin:0 0 10px">1) Richiesta per l’AI</h3>
             <p class="mini" style="margin-top:0; color:var(--muted)">
-              Se alcuni file hanno nomi diversi nel tuo sito, aggiorna l’elenco qui sotto.
+              Questa è l’istruzione principale da dare all’assistente: prima spiega cosa deve fare, poi forniscigli i link del sito.
+            </p>
+
+            <textarea id="aiPromptFixed" class="mono" rows="18" style="width:100%" readonly>
+RICHIESTA (PROMPT):
+
+Crea un itinerario di viaggio in Abruzzo utilizzando come base i luoghi presenti nei link riportati di seguito.
+
+REGOLE DI SELEZIONE LUOGHI (IMPORTANTE):
+
+Vincolo principale:
+Utilizza esclusivamente destinazioni o luoghi principali presenti nei link forniti. Non aggiungere mete geografiche che non compaiono nelle pagine indicate.
+
+Dettaglio dei punti di interesse (approfondimento dei contenuti):
+Se una destinazione è presente nei link, puoi citare e descrivere elementi puntuali specifici contenuti in essa (chiese, palazzi, monumenti, piazze, belvedere, castelli, siti archeologici, luoghi naturali), in modo da costruire un itinerario non generico.
+
+Segnalazione lacune:
+Se i link forniti non contengono dati sufficienti per coprire l'intera durata o l'ambito richiesto, segnalalo esplicitamente all'inizio della risposta (esempio: "Nota: i dati nei link sono parziali per questa zona"), invece di inventare destinazioni esterne.
+
+LOGICA DI COSTRUZIONE:
+
+Verifica la coerenza geografica e i tempi di spostamento realistici.
+
+Considera anche eventuali difficoltà pratiche (parcheggi, zone pedonali, accesso ai centri storici).
+
+Rispetta la stagionalità (es. accessibilità dei passi montani in inverno o attività balneari in estate).
+
+Mantieni un equilibrio tra le tappe per evitare una giornata troppo frenetica.
+
+Seleziona prima i luoghi più rilevanti presenti nei link e poi organizza l’itinerario collegandoli in modo logico lungo lo stesso percorso geografico, evitando spostamenti inutili o ritorni sulla stessa strada.
+
+STRUTTURA DELLA RISPOSTA:
+
+Mattina:
+luoghi specifici e monumenti da visitare.
+
+Pomeriggio:
+tappe limitrofe o approfondimenti nello stesso quadrante geografico.
+
+Eventuale sera:
+suggerimento per centro storico, tradizioni o evento.
+
+Alternativa maltempo:
+attività al coperto nelle vicinanze (musei, chiese, palazzi).
+
+RICERCA EVENTI:
+
+Consulta la pagina eventi ufficiale della Regione Abruzzo:
+https://www.abruzzoturismo.it/it/eventi?page=0
+
+Scansiona le pagine successive in sequenza (page=1, page=2, ecc.) finché trovi pagine che contengono eventi elencati.
+
+Interrompi la scansione quando una pagina non presenta più eventi descritti e mostra solo contenuti generici, struttura vuota o sola mappa.
+
+Filtro:
+Estrai solo gli eventi che ricadono nell'Ambito territoriale e nel Periodo richiesti.
+
+Nota obbligatoria:
+Specifica sempre che date e orari degli eventi vanno verificati sui canali ufficiali.</textarea>
+
+            <hr class="sep" />
+
+            <h3 style="margin:0 0 10px">2) Link del sito</h3>
+            <p class="mini" style="margin-top:0; color:var(--muted)">
+              Questi link sono il dataset da usare per costruire l’itinerario. Se alcuni file hanno nomi diversi nel tuo sito, aggiorna l’elenco qui sotto.
             </p>
 
             <div class="cta-row" style="flex-wrap:wrap; margin-top:0">
               <button class="btn" type="button" id="copyLinks">Copia link</button>
-              <button class="btn" type="button" id="copyAll">Copia tutto (link + richiesta)</button>
+              <button class="btn" type="button" id="copyAll">Copia tutto (richiesta + link + preferenze)</button>
               <span class="mini" id="copyMsg" style="color:var(--muted)"></span>
             </div>
 
-            <textarea id="aiLinks" class="mono" rows="8" style="width:100%; margin-top:10px" readonly>
-https://TUO-SITO/index.html
-https://TUO-SITO/viaggi-in-abruzzo.html
+            <textarea id="aiLinks" class="mono" rows="16" style="width:100%; margin-top:10px" readonly>
+PERCORSI TEMATICI (LUOGHI)
+
+https://TUO-SITO/percorso-citta-borghi.html
+https://TUO-SITO/percorso-castelli.html
+https://TUO-SITO/percorso-medievale.html
+https://TUO-SITO/percorso-barocco.html
+https://TUO-SITO/percorso-archeologico.html
+https://TUO-SITO/percorso-dannunziano.html
+https://TUO-SITO/percorso-artigianato.html
 https://TUO-SITO/percorso-mare.html
 https://TUO-SITO/percorso-montagna.html
 https://TUO-SITO/percorso-trekking-mtb.html
+
+EVENTI E TRADIZIONI
+
 https://TUO-SITO/percorso-eventi-e-tradizioni.html
-https://TUO-SITO/percorso-archeologico.html
-https://TUO-SITO/percorso-medievale.html
-https://TUO-SITO/percorso-castelli.html
-https://TUO-SITO/percorso-barocco.html
-https://TUO-SITO/percorso-artigianato.html
-https://TUO-SITO/percorso-dannunziano.html
-https://TUO-SITO/percorso-citta-borghi.html
-            </textarea>
 
-            <hr class="sep" />
+EVENTI REGIONE ABRUZZO (FONTE UFFICIALE)
 
-            <h3 style="margin:0 0 10px">2) Richiesta per l’AI</h3>
-            <textarea id="aiPromptFixed" class="mono" rows="10" style="width:100%" readonly>
-Utilizza ESCLUSIVAMENTE i contenuti presenti nei link che ti fornisco.
-
-Non aggiungere luoghi non presenti nelle pagine indicate.
-
-Costruisci un itinerario realistico verificando:
-– coerenza geografica
-– tempi di spostamento
-– stagionalità dei luoghi
-– eventuali eventi attivi nel periodo indicato
-
-Se proponi eventi o tradizioni, verifica che siano compatibili con il giorno richiesto (e avvisa che va controllato sui canali ufficiali).
-
-Organizza la risposta con:
-– mattina
-– pomeriggio
-– eventuale sera
-– alternative in caso di maltempo
-
-IMPORTANTE: usa solo luoghi presenti nei link forniti.
-            </textarea>
+https://www.abruzzoturismo.it/it/eventi?page=0
+</textarea>
 
             <hr class="sep" />
 
@@ -116,44 +163,38 @@ Note: (evita autostrada, con bambini, accessibilità, pioggia…)
             </textarea>
 
             <p class="mini" style="margin:10px 0 0; color:var(--muted)">
-              Suggerimento: incolla <strong>link + richiesta per l'AI + preferenze</strong> nella chat in un unico messaggio.
+              Suggerimento: incolla <strong>richiesta per l'AI + link del sito + preferenze</strong> nella chat in un unico messaggio.
             </p>
           </div>
 
           <hr class="sep" />
 
-          <!-- ESEMPI (pochi, come nel vecchio sito, ma non commerciali) -->
-<h2>Esempi di itinerari</h2>
+          <h2>Esempi di itinerari</h2>
 
-<p class="small">
-Questi esempi mostrano il tipo di itinerario che puoi ottenere
-utilizzando lo strumento AI.
-</p>
+          <p class="small">
+            Questi esempi mostrano il tipo di itinerario che puoi ottenere
+            utilizzando lo strumento AI.
+          </p>
 
-<div class="risorse-tiles esempi-grid">
+          <div class="risorse-tiles esempi-grid">
 
-  <div class="card pad esempio-it">
+  <a href="esempio-itinerario-lanciano.html" class="card pad esempio-it">
     <h3>Lanciano e dintorni – 1 giorno</h3>
     <p class="small">
       Centro storico, Costa dei Trabocchi e punti panoramici.
       Adatto a camminate brevi.
     </p>
     <span class="mini">Ambito: Lanciano–Vasto</span>
-  </div>
+  </a>
 
-  <div class="card pad esempio-it">
+  <a href="esempio-itinerario-sulmona.html" class="card pad esempio-it">
     <h3>Sulmona e dintorni – 1 giorno</h3>
     <p class="small">
       Borgo storico, natura e tradizioni dell’entroterra abruzzese.
     </p>
     <span class="mini">Ambito: Avezzano–Sulmona</span>
-  </div>
+  </a>
 
-</div>
-<br>
-<div class="card pad" style="text-align:center">
-  <strong>Non sai da dove iniziare?</strong><br>
-  Prova con: <em>“2 giorni tra borghi e mare partendo da Pescara in primavera”</em>
 </div>
         </div>
       </div>
@@ -161,10 +202,10 @@ utilizzando lo strumento AI.
 
   </main>
 
-<div data-include="footer"></div>
+  <div data-include="footer"></div>
 
   <script src="assets/js/site.js"></script>
-  
+
   <script>
     function copyToClipboard(text){
       return navigator.clipboard.writeText(text);
@@ -184,13 +225,13 @@ utilizzando lo strumento AI.
       const prefs = document.getElementById('aiPrefs').value.trim();
 
       return [
-        "LINK DI RIFERIMENTO:",
-        links,
-        "",
         "RICHIESTA (PROMPT):",
         fixed,
         "",
-        "PREFERENZE (COMPILA):",
+        "LINK DI RIFERIMENTO:",
+        links,
+        "",
+        "PREFERENZE:",
         prefs
       ].join("\n");
     }
