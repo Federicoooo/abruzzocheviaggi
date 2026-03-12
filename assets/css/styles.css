@@ -765,8 +765,8 @@ select option:checked{
     position:fixed;
     left:50% !important;
     right:auto !important;
-    width:min(340px, calc(100vw - 24px)) !important;
-    max-width:calc(100vw - 24px);
+    width:min(210px, calc(100vw - 24px)) !important;
+    max-width:min(210px, calc(100vw - 24px));
     box-sizing:border-box;
     margin-inline:0;
     transform:translateX(-50%) translateY(6px);
@@ -907,3 +907,4 @@ select option:checked{
   text-decoration:none;
   color:inherit;
 }
+
