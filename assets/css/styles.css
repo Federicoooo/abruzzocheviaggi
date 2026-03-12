@@ -782,7 +782,24 @@ select option:checked{
     font-size:.94rem;
     line-height:1.5;
   }
+
+  .ai-more{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+    align-items:start;
+  }
+
+  .ai-more a{
+    display:block;
+    width:100%;
+  }
+
+  .ai-sep{
+    display:none;
+  }
 }
+
 
 .ai-desc{
   margin:0;

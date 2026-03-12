@@ -311,7 +311,8 @@ function buildWikiLink(record, query) {
       panel = document.createElement("div");
       panel.className = "ai-floating-panel";
       panel.hidden = true;
-      panel.innerHTML = '<div class="ai-floating-panel-inner"><p class="ai-floating-text"></p></div>';
+      panel.innerHTML = '<div class="ai-floating-panel-inner"><div class="ai-floating-text"></div></div>';
+
       card.appendChild(panel);
     }
 
