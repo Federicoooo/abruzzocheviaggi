@@ -792,13 +792,20 @@ select option:checked{
   margin-top:10px;
   font-size:.9rem;
   line-height:1.4;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 .ai-more a{
+  display:inline;
   text-decoration:none;
   color:var(--text);
   opacity:.88;
   border-bottom:1px solid transparent;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 .ai-more a:hover{
@@ -821,6 +828,9 @@ select option:checked{
   color:var(--text);
   text-decoration:none;
   border-bottom:1px solid transparent;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 .ai-source a:hover{
