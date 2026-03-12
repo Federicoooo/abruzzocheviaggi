@@ -824,6 +824,12 @@ select option:checked{
   color:var(--muted);
 }
 
+.ai-source{
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
 .ai-source a{
   color:var(--text);
   text-decoration:none;
