@@ -492,9 +492,10 @@ header{
     gap:18px;
   }
 
-  .carditem{
-    width:100%;
-  }
+.carditem{
+  width:min(260px, 100%);
+  margin-inline:auto;
+}
 
   .carditem .media{
     width:198px;
