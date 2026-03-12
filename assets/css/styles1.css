@@ -1,4 +1,4 @@
-﻿:root{
+:root{
   --bg:#0b1220;
   --card:#111b2e;
   --text:#e8eefc;
@@ -28,15 +28,6 @@ body{
 a{color:inherit; text-decoration:none}
 a:hover{text-decoration:underline}
 img{max-width:100%; display:block}
-
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible{
-  outline:2px solid var(--brand);
-  outline-offset:2px;
-}
 
 .container{
   width:min(var(--max), calc(100% - 32px));
@@ -83,7 +74,6 @@ header{
   top:0;
   z-index:50;
   background: rgba(11,18,32,.75);
-  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-bottom:1px solid var(--border);
 }
@@ -151,14 +141,6 @@ header{
   cursor:pointer;
 }
 
-/* Logo */
-.brand img{
-  max-width:180px;
-  width:100%;
-  height:auto;
-}
-
-
 /* ================= HERO ================= */
 
 .hero{
@@ -208,7 +190,7 @@ header{
 /* ================= BADGE ================= */
 
 .badge{
-  display:inline-block;
+  display:inline-flex;
   border:1px solid var(--border);
   background: rgba(255,255,255,.05);
   border-radius:999px;
@@ -216,11 +198,7 @@ header{
   color:var(--muted);
   font-weight:650;
   font-size:.85rem;
-  max-width:100%;
-  white-space:normal;
-  word-break:break-word;
 }
-
 
 /* ================= FILTRI ================= */
 
@@ -243,7 +221,7 @@ header{
 .cards{
   display:flex;
   flex-wrap:wrap;
-  gap:32px;               /* â†‘ piÃ¹ spazio tra le card */
+  gap:32px;               /* ↑ più spazio tra le card */
   justify-content:center;
   margin-top:16px;
 }
@@ -254,10 +232,10 @@ header{
 }
 
 .carditem .media{
-  width:100%;          /* âœ… prende la larghezza interna della card */
-  max-width:186px;     /* âœ… mantiene la dimensione â€œstoricaâ€ quando ci sta */
+  width:100%;          /* ✅ prende la larghezza interna della card */
+  max-width:186px;     /* ✅ mantiene la dimensione “storica” quando ci sta */
   height:138px;
-  margin:4px auto 10px; /* âœ… ora lâ€™auto-centering funziona sempre */
+  margin:4px auto 10px; /* ✅ ora l’auto-centering funziona sempre */
   background:#fff;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.18);
@@ -350,7 +328,7 @@ header{
 
 /* ================= ACCESSIBILITY ================= */
 
-/* Link "Vai al contenuto" (invisibile finchÃ© non premi TAB) */
+/* Link "Vai al contenuto" (invisibile finché non premi TAB) */
 .skip-link{
   position:absolute;
   left:-999px;
@@ -391,6 +369,7 @@ header{
 
 .risorsa-card:hover .risorsa-img img{
   transform: scale(1.04);
+  transition: transform .25s ease;
 }
 
 .risorsa-img{
@@ -410,7 +389,6 @@ header{
   width:100%;
   height:100%;
   object-fit:contain; /* default = niente tagli */
-  transition: transform .25s ease;
 }
 
 /* Solo pagina Viaggi in Abruzzo */
@@ -437,7 +415,26 @@ header{
   border: 1px solid var(--border);
 }
 
-/* ================= Viaggi dallâ€™Abruzzo: logo compagnie ================= */
+/* Multi-select: stesso look del tema (no nero pieno) */
+.guide-filters select[multiple]{
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* Opzioni: niente “nero pece”, manteniamo coerenza */
+.guide-filters select[multiple] option{
+  background: rgba(17,27,46,1);   /* simile a --card */
+  color: var(--text);
+}
+
+/* Evidenziazione selezione */
+.guide-filters select[multiple] option:checked{
+  background: rgba(255,255,255,.18);
+  color: var(--text);
+}
+
+/* ================= Viaggi dall’Abruzzo: logo compagnie ================= */
 
 .dest-cta{
   display:flex;
@@ -524,43 +521,29 @@ select option{
   background: #fff;     /* sfondo chiaro */
 }
 
-/* quando Ã¨ selezionata (Windows/Chrome spesso ok) */
+/* quando è selezionata (Windows/Chrome spesso ok) */
 select option:checked{
   background: #e8eefc;
   color: #111;
 }
 
 
-/* Guide: multi-select con tema chiaro coerente con i dropdown di sistema */
+/* Guide: multi-select come “lista bianca” (coerente con i dropdown di sistema) */
 .guide-filters select[multiple]{
-  background:#fff;
-  color:#111;
+  background:#fff !important;
+  color:#111 !important;
   border:1px solid var(--border);
 }
 
 .guide-filters select[multiple] option{
-  background:#fff;
-  color:#111;
+  background:#fff !important;
+  color:#111 !important;
 }
 
 /* opzionale: evidenziazione selezione */
 .guide-filters select[multiple] option:checked{
-  background:#e8eefc;
-  color:#111;
-}
-
-
-@media (prefers-reduced-motion: reduce){
-  html{
-    scroll-behavior:auto;
-  }
-
-  *,
-  *::before,
-  *::after{
-    animation:none !important;
-    transition:none !important;
-  }
+  background:#e8eefc !important;
+  color:#111 !important;
 }
 
 /* ================= LIGHTBOX ================= */
@@ -578,7 +561,7 @@ select option:checked{
 
 .lightbox-box{
   position:relative;
-  width:min(760px, 92vw);   /* âœ… piÃ¹ piccola */
+  width:min(760px, 92vw);   /* ✅ più piccola */
 }
 
 .lightbox-box img{
@@ -589,7 +572,7 @@ select option:checked{
   object-fit:contain;
   border-radius:14px;
   box-shadow:0 20px 60px rgba(0,0,0,.6);
-  background:transparent;   /* âœ… niente quadrato */
+  background:transparent;   /* ✅ niente quadrato */
 }
 
 .lightbox-close{
@@ -650,7 +633,7 @@ select option:checked{
 }
 
 
-/* Nota AI â€“ evidenza leggera */
+/* Nota AI – evidenza leggera */
 .ai-tool-note{
   margin-top:10px;
   padding:10px 12px;
@@ -660,7 +643,7 @@ select option:checked{
 }
 
 /* =========================
-   ESEMPI ITINERARI â€“ percorso misto
+   ESEMPI ITINERARI – percorso misto
 ========================= */
 
 /* non centrati */
@@ -759,7 +742,6 @@ select option:checked{
   .ai-floating-panel{
     width:calc(100vw - 24px) !important;
     left:12px !important;
-    right:auto;
   }
 
   .ai-floating-panel-inner{
@@ -841,6 +823,12 @@ select option:checked{
 }
 
 
+.badge{
+  display:inline-block;
+  max-width:100%;
+  white-space:normal;
+  word-break:break-word;
+}
 
 .esempi-grid a{
   text-decoration:none;
