@@ -323,15 +323,21 @@ function buildWikiLink(record, query) {
 
     let html = "";
 
-    html += `
-      <div class="ai-more">
-        <a href="${wikiLink}" target="_blank" rel="noopener noreferrer">Wikipedia</a>
-        <span class="ai-sep">|</span>
-        <a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener noreferrer">Google Maps</a>
-        <span class="ai-sep">|</span>
-        <a href="https://www.google.com/search?tbm=isch&q=${q}" target="_blank" rel="noopener noreferrer">Cerca immagini</a>
-      </div>
-    `;
+html += `
+  <div class="ai-more">
+    <span class="ai-link-item">
+      <a href="${wikiLink}" target="_blank" rel="noopener noreferrer">Wikipedia</a>
+    </span>
+    <span class="ai-link-item">
+      <span class="ai-sep">|</span>
+      <a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener noreferrer">Google Maps</a>
+    </span>
+    <span class="ai-link-item">
+      <span class="ai-sep">|</span>
+      <a href="https://www.google.com/search?tbm=isch&q=${q}" target="_blank" rel="noopener noreferrer">Cerca immagini</a>
+    </span>
+  </div>
+`;
 
     text.innerHTML = html;
 

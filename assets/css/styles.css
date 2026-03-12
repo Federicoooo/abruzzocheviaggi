@@ -769,9 +769,12 @@ select option:checked{
 
 @media (max-width:700px){
   .ai-floating-panel{
-    width:calc(100vw - 24px) !important;
+    position:fixed;
     left:12px !important;
-    right:auto;
+    right:12px !important;
+    width:auto !important;
+    max-width:360px;
+    margin-inline:auto;
   }
 
   .ai-floating-panel-inner{
@@ -788,15 +791,26 @@ select option:checked{
     grid-template-columns:1fr;
     gap:8px;
     align-items:start;
-  }
-
-  .ai-more a{
-    display:block;
     width:100%;
   }
 
+  .ai-more a{
+    display:inline;
+    width:auto;
+  }
+
   .ai-sep{
-    display:none;
+    display:inline;
+    opacity:.45;
+    margin:0 6px 0 0;
+  }
+
+  .ai-link-item{
+    display:block;
+    width:100%;
+    min-width:0;
+    overflow-wrap:anywhere;
+    word-break:break-word;
   }
 }
 
@@ -811,26 +825,31 @@ select option:checked{
   line-height:1.4;
   display:flex;
   flex-wrap:wrap;
-  align-items:center;
   gap:6px 10px;
 }
 
-.ai-more a{
+.ai-link-item{
   display:inline-flex;
   align-items:center;
+  min-width:0;
+  max-width:100%;
+}
+
+.ai-link-item a{
   text-decoration:none;
   color:var(--text);
   opacity:.88;
   border-bottom:1px solid transparent;
 }
 
-.ai-more a:hover{
+.ai-link-item a:hover{
   opacity:1;
   border-bottom:1px solid var(--border);
 }
 
 .ai-sep{
-  display:none;
+  opacity:.45;
+  margin-right:8px;
 }
 
 .ai-source{
