@@ -792,20 +792,19 @@ select option:checked{
   margin-top:10px;
   font-size:.9rem;
   line-height:1.4;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  word-break:break-word;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px 10px;
 }
 
 .ai-more a{
-  display:inline;
+  display:inline-flex;
+  align-items:center;
   text-decoration:none;
   color:var(--text);
   opacity:.88;
   border-bottom:1px solid transparent;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  word-break:break-word;
 }
 
 .ai-more a:hover{
@@ -814,8 +813,7 @@ select option:checked{
 }
 
 .ai-sep{
-  opacity:.45;
-  margin:0 6px;
+  display:none;
 }
 
 .ai-source{
