@@ -2415,6 +2415,14 @@ window.SCHEDE_AI = {
     "scheda": "L’abbazia di S. Giovanni in Venere a Fossacesia è uno dei complessi medievali più riconoscibili della costa abruzzese. Affacciata sul paesaggio adriatico, unisce rilievo architettonico, memoria monastica e forte relazione tra edificio, spiritualità e territorio.",
     "link": "https://it.wikipedia.org/w/index.php?search=S.%20Giovanni%20in%20Venere%20Fossacesia%20Abruzzo"
   },
+  "assets/img/medievale/villa_scorciosa_san_silvestro.jpg": {
+    "percorso": "medievale",
+    "ambito": "Lanciano-Vasto",
+    "titolo": "Fossacesia",
+    "tipo": "Chiesa di San Silvestro",
+    "scheda": "La chiesa di San Silvestro a Villa Scorciosa di Fossacesia è uno dei complessi medievali più riconoscibili della costa abruzzese. Tra pietra, impianto antico e contesto territoriale, il luogo offre una lettura concreta della lunga continuità tra architettura religiosa e vita delle comunità.",
+    "link": "https://it.wikipedia.org/w/index.php?search=S.%20Giovanni%20in%20Venere%20Fossacesia%20Abruzzo"
+  },
   "assets/img/medievale/Santa_Maria_Maggiore_Lanciano.jpg": {
     "percorso": "medievale",
     "ambito": "Lanciano-Vasto",
