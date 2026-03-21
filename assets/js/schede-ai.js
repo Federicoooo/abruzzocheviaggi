@@ -2439,6 +2439,38 @@ window.SCHEDE_AI = {
     "scheda": "S. Spirito a Lanciano rientra tra le emergenze più interessanti del Medioevo abruzzese. Tra pietra, impianto antico e contesto territoriale, il luogo offre una lettura concreta della lunga continuità tra architettura religiosa e vita delle comunità.",
     "link": "https://it.wikipedia.org/w/index.php?search=S.%20Spirito%20Lanciano%20Abruzzo"
   },
+  "assets/img/medievale/lanciano_santa_venera.jpg": {
+    "percorso": "medievale",
+    "ambito": "Lanciano-Vasto",
+    "titolo": "Lanciano",
+    "tipo": "Ruderi chiesa di Santa Venera",
+    "scheda": "Santa Venera a Lanciano rientra tra le emergenze più interessanti del Medioevo abruzzese. Tra pietra, impianto antico e contesto territoriale, il luogo offre una lettura concreta della lunga continuità tra architettura religiosa e vita delle comunità.",
+    "link": "https://it.wikipedia.org/wiki/Chiese_di_Lanciano"
+  },
+  "assets/img/medievale/lanciano_sant_onofrio.jpg": {
+    "percorso": "medievale",
+    "ambito": "Lanciano-Vasto",
+    "titolo": "Lanciano",
+    "tipo": "Ruderi chiesa di Sant'Onofrio",
+    "scheda": "Sant'Onofrio a Lanciano rientra tra le emergenze più interessanti del Medioevo abruzzese. Tra pietra, impianto antico e contesto territoriale, il luogo offre una lettura concreta della lunga continuità tra architettura religiosa e vita delle comunità.",
+    "link": "https://it.wikipedia.org/wiki/Chiese_di_Lanciano"
+  },
+  "assets/img/medievale/mozzagrogna_san_nome.jpg": {
+    "percorso": "medievale",
+    "ambito": "Lanciano-Vasto",
+    "titolo": "Mozzagrogna",
+    "tipo": "Ruderi chiesa di San nome",
+    "scheda": "San nome a Mozzagrogna rientra tra le emergenze più interessanti del Medioevo abruzzese. Tra pietra, impianto antico e contesto territoriale, il luogo offre una lettura concreta della lunga continuità tra architettura religiosa e vita delle comunità.",
+    "link": "https://it.wikipedia.org/wiki/Mozzagrogna"
+  },
+  "assets/img/medievale/santa_maria_imbaro.jpg": {
+    "percorso": "medievale",
+    "ambito": "Lanciano-Vasto",
+    "titolo": "Santa Maria Imbaro",
+    "tipo": "Chiesa di Santa Maria Imbaro",
+    "scheda": "S. Maria Imbaro a Santa Maria Imbaro rientra tra le emergenze più interessanti del Medioevo abruzzese. Tra pietra, impianto antico e contesto territoriale, il luogo offre una lettura concreta della lunga continuità tra architettura religiosa e vita delle comunità.",
+    "link": "https://it.wikipedia.org/w/index.php?search=S.%20Maria%20Imbaro%20Santa%20Maria%20Imbaro%20Abruzzo"
+  },
   "assets/img/medievale/rocca_san_giovanni.jpg": {
     "percorso": "medievale",
     "ambito": "Lanciano-Vasto",
@@ -2471,14 +2503,7 @@ window.SCHEDE_AI = {
     "scheda": "S. Pancrazio a Roccascalegna rientra tra le emergenze più interessanti del Medioevo abruzzese. Tra pietra, impianto antico e contesto territoriale, il luogo offre una lettura concreta della lunga continuità tra architettura religiosa e vita delle comunità.",
     "link": "https://it.wikipedia.org/w/index.php?search=S.%20Pancrazio%20Roccascalegna%20Abruzzo"
   },
-  "assets/img/medievale/santa_maria_imbaro.jpg": {
-    "percorso": "medievale",
-    "ambito": "Lanciano-Vasto",
-    "titolo": "Santa Maria Imbaro",
-    "tipo": "Chiesa di Santa Maria Imbaro",
-    "scheda": "S. Maria Imbaro a Santa Maria Imbaro rientra tra le emergenze più interessanti del Medioevo abruzzese. Tra pietra, impianto antico e contesto territoriale, il luogo offre una lettura concreta della lunga continuità tra architettura religiosa e vita delle comunità.",
-    "link": "https://it.wikipedia.org/w/index.php?search=S.%20Maria%20Imbaro%20Santa%20Maria%20Imbaro%20Abruzzo"
-  },
+
   "assets/img/medievale/farasmartino.jpg": {
     "percorso": "medievale",
     "ambito": "Lanciano-Vasto",
