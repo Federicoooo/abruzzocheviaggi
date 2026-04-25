@@ -397,10 +397,10 @@
       "name": "Tirana International Airport",
       "transport_url": "https://www.tirana-airport.com/en/transport-and-directions/15/By-Bus",
       "direct": [
-        { "city": "Tirana", "mode": "bus", "time": "≈ 30 min" },
-        { "city": "Durrës", "mode": "bus", "time": "" },
-        { "city": "Fier", "mode": "bus", "time": "" },
-        { "city": "Vlorë", "mode": "bus", "time": "" }
+        { "city": "Tirana", "mode": "bus", "time": "≈ 30-40 min" },
+        { "city": "Durrës", "mode": "bus", "time": "≈ 35–45 min" },
+        { "city": "Fier", "mode": "bus", "time": "≈ 2h" },
+        { "city": "Vlorë", "mode": "bus", "time": "≈ 2h40" }
       ]
     },
 
@@ -408,10 +408,10 @@
       "name": "Milan Bergamo Airport",
       "transport_url": "https://www.milanbergamoairport.it/it/autobus/",
       "direct": [
-        { "city": "Bergamo", "mode": "bus", "time": "" },
-        { "city": "Milano C.le", "mode": "bus", "time": "" },
-        { "city": "Brescia", "mode": "bus", "time": "" },
-        { "city": "Verona", "mode": "bus", "time": "" }
+        { "city": "Bergamo", "mode": "bus", "time": "≈ 20  min" },
+        { "city": "Milano C.le", "mode": "bus", "time": "≈ 1h" },
+        { "city": "Brescia", "mode": "bus", "time": "≈ 55 min" },
+        { "city": "Verona", "mode": "bus", "time": "≈ 1h45" }
       ]
     },
 
@@ -419,10 +419,10 @@
       "name": "Milano Malpensa Airport",
       "transport_url": "https://www.milanomalpensa-airport.com/it/da-per/in-bus",
       "direct": [
-        { "city": "Milano C.le", "mode": "bus", "time": "" },
-                    { "city": "Torino", "mode": "bus", "time": "" },
+        { "city": "Milano C.le", "mode": "bus", "time": "≈ 50–60 min" },
+                    { "city": "Torino", "mode": "bus", "time": "≈ 2h" },
         { "city": "Milano Cadorna", "mode": "treno", "time": "≈ 40 min" },
-        { "city": "Novara", "mode": "bus", "time": "" }
+        { "city": "Novara", "mode": "bus", "time": "≈ 50–55 min" }
       ]
     }
 
